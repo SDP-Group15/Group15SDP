@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Flask App</title>
+    <style>
+        .header {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: #0F3362;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: larger;
+        }
+        .container {
+            margin: 20px;
+            text-align: left; /* Align buttons and text to the left */
+        }
+        .rounded-button {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            width: 100px; /* Set the width to create square buttons */
+            height: 100px; /* Set the height to create square buttons */
+            background-color: #0F3362;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-bottom: 10px; /* Add margin for vertical spacing */
+            margin-left: 300px;
+            display: block; /* Ensures each button appears on a new line */
+        }
+        .hidden-text {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>MeSH Mining</h1>
+    </div>
+    <div class="container">
+        <button class="rounded-button" onclick="showText('text1')">Search by Gene</button>
+        <button class="rounded-button" onclick="showText('text2')">Search by MeSH</button>
+        <button class="rounded-button" onclick="showText('text3')">Search by Multiple</button>
+    </div>
+    <div id="text1" class="hidden-text">
+        Please type in a Gene-ID
+    </div>
+    <div id="text2" class="hidden-text">
+        Please select a MeSH Term
+    </div>
+    <div id="text3" class="hidden-text">
+        Please enter multiple Gene-IDs
+    </div>
+</body>
+<script>
+    function showText(textId) {
+        var textElement = document.getElementById(textId);
+        if (textElement.style.display === "none") {
+            textElement.style.display = "block";
+        } else {
+            textElement.style.display = "none";
+        }
+    }
+</script>
+</html>
