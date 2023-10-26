@@ -1,10 +1,9 @@
 # backendDemoCode
-Install postgreSQL locally and use the database labeled after your pc username for this code.
+Updated to connect to AWS RDS PG Database.
 
-Create table SQL command:
-CREATE TABLE GENE(GeneID INT NOT NULL, MeSH TEXT NOT NULL, p_Value TEXT, Enrich NUMERIC, PMIDs TEXT);
+To use install psycopg2:
+  pip install psycopg2
 
-\copy GENE FROM '/path/to/csv/combined_testset.csv' DELIMITER ',' CSV;
+Note: can be changed to sqlalchemy if required.
 
---change 'path/to/csv' to the where you have the test data stored.
-
+Try messing around with the commands in Main().
