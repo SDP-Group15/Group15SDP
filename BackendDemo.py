@@ -7,7 +7,7 @@ def openConnection(dbName: str = None) -> type(connect()):
     conn = connect(
             host='seniordesign.cyzdvv3sqno4.us-east-1.rds.amazonaws.com',
             port='5432',
-            database='bi' if not dbName else dbName,
+            database='sdp152024' if not dbName else dbName,
             user='postgres',
             password='Uconn!2024'
     )
