@@ -7,4 +7,6 @@ pip install psycopg2
 
 Note: can be changed to sqlalchemy if required
 
+Current database which holds table "GENE" is named "bi"
+
 Try messing around with the commands in Main()
