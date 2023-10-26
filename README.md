@@ -1,4 +1,4 @@
-# backendDemoCode
+# Backend Demo
 Updated to connect to AWS RDS PG Database
 
 To use install psycopg2:
