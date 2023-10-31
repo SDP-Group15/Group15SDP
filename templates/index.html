@@ -12,13 +12,18 @@
             font-size: larger;
         }
         .container {
+            display: flex;
+            justify-content: center;
+            
+        }
+        .container button{
             margin: 20px;
-            text-align: left; /* Align buttons and text to the left */
+            text-align: center; /* Align buttons and text to the left */
         }
         .rounded-button {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             width: 100px; /* Set the width to create square buttons */
-            height: 100px; /* Set the height to create square buttons */
+            height: 50px; /* Set the height to create square buttons */
             background-color: #0F3362;
             color: white;
             border: none;
@@ -33,6 +38,27 @@
             margin-top: 10px;
             text-align: center;
         }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #0F3362;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            color: aliceblue;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #000000;
+        }
     </style>
 </head>
 <body>
@@ -40,7 +66,12 @@
         <h1>MeSH Mining</h1>
     </div>
     <div class="container">
-        <button class="rounded-button" onclick="showText('text1')">Search by Gene</button>
+        <button class="rounded-button" id="button1" onclick="toggleDropdown('dropdown1')">Search by Gene-ID</button>
+        <div id="dropdown1" class="dropdown-content">
+            <a href="#">Option 1</a>
+            <a href="#">Option 2</a>
+            <a href="#">Option 3</a>
+        </div>
         <button class="rounded-button" onclick="showText('text2')">Search by MeSH</button>
         <button class="rounded-button" onclick="showText('text3')">Search by Multiple</button>
     </div>
@@ -63,5 +94,14 @@
             textElement.style.display = "none";
         }
     }
+
+    function toggleDropdown(dropdownId) {
+    var dropdown = document.getElementById(dropdownId);
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else {
+        dropdown.style.display = 'block';
+    }
+}
 </script>
 </html>
