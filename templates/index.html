@@ -1,24 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@200&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+
     <title>Basic Flask App</title>
     <style>
-        .header {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            background-color: #0F3362;
-            color: white;
-            padding: 5px;
-            text-align: center;
-            font-size: larger;
-            display: flex;
-            justify-content: center;
+        body /* eliminate white border and change background */
+        {
+            margin: 0;
+            padding: 0;
+            background-color: #dbdbdb;
         }
-        .container {
+
+        .header /* MeSH Header*/
+        {
+            font-family: 'Antonio', sans-serif;
+            background-color: #0F3362;
+            color: #dbdbdb;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 55px;
+            
+            text-decoration-line: underline;
+            text-decoration-color: #0a213f;
+            text-decoration-skip-ink: none; 
+            text-underline-offset: 20px; 
+            max-height: 100px; 
+        }
+
+        .header h1 /* Edit placement of header text */
+        {
+            margin-top: -40px; 
+        }
+
+        .container 
+        {
             display: flex;
             justify-content: center;
             
         }
-        .box{
+
+        .box
+        {
             width: 500px; 
             height: auto;
             margin: 0 auto; 
@@ -34,7 +66,7 @@
             text-align: center; /* Align buttons and text to the left */
         }
         .rounded-button {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-family: 'Lora', sans-serif;
             width: 100px; /* Set the width to create square buttons */
             height: 50px; /* Set the height to create square buttons */
             background-color: #0F3362;
