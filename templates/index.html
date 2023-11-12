@@ -13,14 +13,169 @@
     <link rel="stylesheet" type="text/CSS" href="static/style.css">
 
     <title>Basic Flask App</title>
+    <style>
+        body /* eliminate white border and change background */
+        {
+            margin: 0;
+            padding: 0;
+            background-color: #dbdbdb; 
+        }
+
+        .header /* MeSH Header*/
+        {
+        
+            font-family: 'Antonio', sans-serif;
+            background-color: #0F3362;
+            color: #dbdbdb;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 55px;
+            
+            text-decoration-line: underline;
+            text-decoration-color: #0a213f;
+            text-decoration-skip-ink: none; 
+            text-underline-offset: 20px; 
+            max-height: 100px; 
+        }
+
+        .fixed-image /* Logo settings */
+        {
+            position: fixed;
+            bottom: 10px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 140px; 
+            height: auto; 
+        }
+
+        .header h1 /* Edit placement of header text */
+        {
+            margin-top: -40px; 
+        }
+
+        .container /* button placement */
+        {
+            display: flex;
+            justify-content: center;
+            
+        }
+
+        .container button /* button placement */
+        {
+            margin: 20px;
+            text-align: center; 
+        }
+
+        .box /* button background placement */
+        {
+            width: 500px; 
+            height: auto;
+            margin: 0 auto; 
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(202, 204, 209); 
+            box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.8); 
+        }
+
+        .rounded-button /* button style conventions */
+        {
+            font-family: 'Lora', sans-serif;
+            width: 100px; 
+            height: 50px; 
+            background-color: #0F3362;
+            box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.6); 
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-bottom: 10px; 
+            margin-left: 300px;
+            display: block; 
+        }
+
+        /* dropdown content begin*/
+
+        .dropdown-content /* USE CASE 1 options */
+        {
+            display: none;
+            margin-top: 100px;
+            position: absolute;
+            background-color: #0F3362;
+            min-width: 200px;
+            max-height: fit-content;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a /* style */
+        {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            color: aliceblue;
+        }
+
+        .dropdown-content a:hover 
+        {
+            background-color: #000000;
+        }
+
+        .scrollable-content 
+        {
+            max-height: 250px; 
+            overflow-y: scroll;
+        }
+
+        .dropdown input 
+        {
+            min-width: auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+
+        /* end of dropdown content */
+
+
+        .search-container 
+        {
+            width: 300px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .search-container p 
+        {
+            font-size: 16px;
+            font-family: 'Lora', sans-serif;
+            margin: 0;
+        }
+        
+        
+
+
+    </style>
 </head>
 <body>
-    <div class="header">
-        <h1>MeSH Mining</h1>
-    </div>
+    <header>
+        <div class="header">
+            <h1>MeSH Mining</h1>
+        </div>
+    </header>
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Boehringer_Ingelheim_Logo.svg/2560px-Boehringer_Ingelheim_Logo.svg.png" alt="Fixed Image" class="fixed-image">
+
     <div class="box">
+
     <div class="container">
-        <button class="rounded-button" id="button1" onclick="toggleDropdown('dropdown1')">Search by Gene-ID</button>
+        <button class="rounded-button" id="button1" onclick="(function() { toggleDropdown('dropdown1'); showText('Please enter a Gene-ID'); })()">Search by Gene-ID</button>
         <div id="dropdown1" class="dropdown-content">
             <input type="text" id="searchInput" oninput="filterDropdown('dropdown1')">
             <div class="scrollable-content">
@@ -30,22 +185,27 @@
                 <a href="#">Option 4</a>
                 <a href="#">Option 5</a>
             </div>
-            <!-- Add more options as needed -->
+
         </div>
-        <button class="rounded-button" onclick="showText('text2')">Search by MeSH</button>
-        <button class="rounded-button" onclick="showText('text3')">Search by Multiple</button>
+
+        <button class="rounded-button" onclick="showText('Please select a MeSH Term')">Search by MeSH</button>
+        <button class="rounded-button" onclick="showText('Please enter multiple Gene-IDs')">Search by Multiple</button>
+        
     </div>
 </div>
-    <div id="text1" class="hidden-text">
-        Please type in a Gene-ID
-    </div>
-    <div id="text2" class="hidden-text">
-        Please select a MeSH Term
-    </div>
-    <div id="text3" class="hidden-text">
-        Please enter multiple Gene-IDs
-    </div>
+
     
+
+
+
+
+    <div class="search-container" id="searchContainer">
+        <p> Select an option from above. </p>
+    </div>
+
 </body>
 <script src="static/functions.js"></script>
 </html>
+
+
+
