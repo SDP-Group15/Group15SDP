@@ -1,12 +1,2 @@
-# Backend Demo
-Updated to connect to AWS RDS PG Database
-
-To use install psycopg2:
-
-pip install psycopg2
-
-Note: can be changed to sqlalchemy if required
-
-Current database which holds table "GENE" is named "sdp152024"
-
-Try messing around with the commands in Main()
+# MainRepo
+This is the main repo for the Boehringer Ingelheim MeSH Senior Design Project. As we learn more about github everyone is welcome to edit/add info, branches, etc.
