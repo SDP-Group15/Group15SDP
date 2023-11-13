@@ -7,7 +7,7 @@ def index():
     return render_template('index.html')
 
 #example api run, this will return all genes with id '34' from the database
-#will add functionality to take input later --Isaiah
+#will add functionality to take an input later --Isaiah
 @app.route('/api-test', methods = ['GET'])
 def hello():
     dbConection = openConnection()
@@ -15,4 +15,4 @@ def hello():
     return gene[1]
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True)
