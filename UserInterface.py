@@ -9,7 +9,7 @@ def index():
 #example api run, this will return all genes with id '34' from the database
 #will add functionality to take an input later --Isaiah
 @app.route('/api-test', methods = ['GET'])
-def hello():
+def apiTest():
     dbConection = openConnection()
     gene = searchByGene('34', dbConection)
     return gene[1]
