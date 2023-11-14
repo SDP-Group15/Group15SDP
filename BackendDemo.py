@@ -9,7 +9,7 @@ from decimal import Decimal, getcontext     #for fishers_method
 #***main functions--------------------------------------------------------------------------------------------------***
 
 
-def openConnection() -> tuple[type(psycopg2.connect()), type(psycopg2.connect().cursor)]:
+def openConnection() -> type(tuple()):
     try:
         # Establish a connection to the database
         db_config = {
@@ -162,10 +162,10 @@ def writeToCsvFile(data: list, fileName: str = 'Demo.csv') -> None:
 
 def main() -> None:
 
-    # output = multipleByGene(geneList=[34,37])
+    output = multipleByGene(geneList=[34,37])
 
     # output = searchByMesh(mesh='Acyl-CoA Dehydrogenase')  #* manual use *
-    output = searchByGene(gene=34)                        #* manual use *
+    # output = searchByGene(gene=34)                        #* manual use *
 
 
     # print(output[0])
@@ -179,4 +179,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
