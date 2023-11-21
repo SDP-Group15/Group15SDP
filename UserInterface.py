@@ -42,6 +42,9 @@ def searchByMesh_api():
         data = gene[1]
         return data
 
+#search for multiple genes api, this method uses post and 
+#requires the header to be set to 'content-type: application/json'
+#the body of the post request uses the format 'geneIDs': ['<ID1>', '<ID2>']
 @app.route('/searchMultipleGenes', methods = ['POST'])
 def searchByMultipleGenes_api():
     #gets list of genes from post body
