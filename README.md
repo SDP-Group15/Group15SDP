@@ -1,16 +1,25 @@
 # addAPI
-This readme file explains the usage of the APIs in UserInterface.py
+This readme file explains the usage of the APIs in `UserInterface.py`
+
+First, start the UserInterface.py by using the following command:
+```sh
+flask --app UserInterface.py run
+```
 
 ## Search by Gene
 The `searchByGene_api` function is setup to use the GET http request method. Two of the ways it can be tested are shown below.
+
     1. Directly through the browser using the url `http://127.0.0.1:5000/searchGene?geneID=90`. This url will return all items in the table that match the geneID '90'.
+
     2. Using curl command from terminal.
 
     curl 'http://127.0.0.1:5000/searchGene?geneID=90'
 
 ## Search by Mesh
 The `searchByMesh_api` function also uses the GET http request method and functions the same way as above.
+
     1. `http://127.0.0.1:5000/searchMesh?mesh=Humans` will return all items that have a mesh equal to 'Humans'
+
     2. Using curl command from terminal
 
     curl 'http://127.0.0.1:5000/searchMesh?mesh=Humans'
