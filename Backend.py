@@ -1,10 +1,7 @@
 from psycopg2 import connect
 import os
 import csv
-<<<<<<< HEAD
-=======
 import math
->>>>>>> origin/apinew
 import simplejson
 import json
 
@@ -20,42 +17,6 @@ def openConnection(dbName: str = None) -> type(connect()):
     return conn
 
 
-<<<<<<< HEAD
-def searchByGene(gene: str, connection: type(connect())) -> tuple:
-    cursor = connection.cursor() 
-
-    cursor.execute(
-        f"SELECT * FROM \"GENE\" WHERE \"GeneID\" = '{gene}' ORDER BY \"p_Value\" ASC;")
-    
-    output = cursor.fetchall() 
-    
-    return list(output), simplejson.dumps(output, indent=2)
-#   **returns tuple access the elements 0 and 1 accordingly**
-
-
-def searchByMesh(mesh: str, connection: type(connect())) -> tuple:
-    cursor = connection.cursor() 
-
-    cursor.execute(
-        f"SELECT * FROM \"GENE\" WHERE \"MeSH\" LIKE '{mesh}' ORDER BY \"p_Value\" ASC;") #may need to change like depending
-    
-    output = cursor.fetchall() 
-
-    return list(output), simplejson.dumps(output, indent=2)
-
-
-def multipleByGeneId(geneList: list, connection: type(connect())) ->  tuple:
-    cursor = connection.cursor()
-    
-    output = []
-    for gene in geneList:
-        cursor.execute(
-            f"SELECT * FROM \"GENE\" WHERE \"GeneID\" = '{gene}' ORDER BY \"p_Value\" ASC;")
-        tempregister = cursor.fetchall()
-        if(tempregister): output+= tempregister
-
-    return output, simplejson.dumps(output, indent=2)
-=======
 def searchByGene(gene: str, connection: type(connect()), page: int, per_page: int) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
@@ -167,7 +128,6 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int, p
         'per_page': per_page,
         'total_pages': math.ceil(total_records / per_page)
     }
->>>>>>> origin/apinew
 
 
 def writeJsonToTxt(data: list, fileName: str = 'Demo.txt') -> None:
