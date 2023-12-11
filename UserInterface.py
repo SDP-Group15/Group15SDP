@@ -12,10 +12,13 @@ def format_results(raw_results):
     formatted = []
     for result in raw_results:
         formatted_result = {
-            'id': result[0], 
-            'description': result[1], 
+            'id': result[0],
+            'description': result[1],
+
+        }
         formatted.append(formatted_result)
     return formatted
+
 
 @app.route('/searchGene', methods=['GET'])
 def searchByGene_api():
@@ -32,6 +35,8 @@ def searchByGene_api():
 
     return jsonify(response)
 
+
+
 @app.route('/searchMesh', methods = ['GET'])
 def searchByMesh_api():
     mesh_term = request.args.get('meshTerm')
@@ -46,6 +51,7 @@ def searchByMesh_api():
     dbConnection.close()
 
     return jsonify(response)
+
 
 
 
