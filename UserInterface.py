@@ -12,10 +12,8 @@ def format_results(raw_results):
     formatted = []
     for result in raw_results:
         formatted_result = {
-            'id': result[0],  # Assuming result[0] is the id
-            'description': result[1],  # Assuming result[1] is the description
-            # Add more fields based on your actual database result structure
-        }
+            'id': result[0], 
+            'description': result[1], 
         formatted.append(formatted_result)
     return formatted
 
