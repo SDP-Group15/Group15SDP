@@ -14,11 +14,11 @@ The `searchByGene_api` function is setup to use the GET http request method. Two
 curl 'http://127.0.0.1:5000/searchGene?geneID=90'
 ```
 ## Search by Mesh
-The `searchByMesh_api` function also uses the GET http request method and functions the same way as above.  
-1. `http://127.0.0.1:5000/searchMesh?mesh=Humans` will return all items that have a mesh equal to 'Humans'.
-2. Using curl command from terminal:
+The `searchByMesh_api` function also uses the GET http request method but takes the input as a header rather than as a query string. An example test using curl is shown below:  
 ```sh
-curl 'http://127.0.0.1:5000/searchMesh?mesh=Humans'
+curl 'http://127.0.0.1:5000/searchMesh' \
+-H 'content-type: application/json' \
+-H 'meshTerm: Genetic Predisposition to Disease'
 ```
 ## Search by Multiple Gene IDs
 The `searchByMultipleGenes_api` function is setup to use the GET http request method and functions similar to the "Search by Gene" API. Two of the ways it can be tested are shown below.  
