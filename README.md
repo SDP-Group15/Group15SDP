@@ -6,3 +6,21 @@ In order to run this web application, start a local PostgreSQL server and use th
 ```sh
 flask --app UserInterface.py run
 ```
+## Dependencies
+
+1. Flask
+```sh
+pip install Flask
+```
+2. psycopg2
+```sh
+pip install psycopg2
+```
+3. simplejson
+```sh
+pip install simplejson
+```
+or
+```sh
+python3 -m pip install simplejson
+```
