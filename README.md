@@ -1,2 +1,8 @@
-# MainRepo
-This is the main repo for the Boehringer Ingelheim MeSH Senior Design Project. As we learn more about github everyone is welcome to edit/add info, branches, etc.
+# Boehringer Ingelheim MeSH Senior Design Project
+
+Most flask operations are conducted from `UserInterface.py` and much of the frontend development takes place in `templates/index.html`.
+
+In order to run this web application use the following terminal command:
+```sh
+flask --app UserInterface.py run
+```
