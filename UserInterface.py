@@ -39,7 +39,8 @@ def searchByGene_api():
 
 @app.route('/searchMesh', methods = ['GET'])
 def searchByMesh_api():
-    mesh_term = request.args.get('meshTerm')
+    #mesh_term needs to be a header so that the mesh term can contain spaces
+    mesh_term = request.headers.get('meshTerm')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
 
