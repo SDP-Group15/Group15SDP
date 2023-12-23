@@ -13,6 +13,12 @@ function fetchResults(page) {
     const geneId = params.get('geneID');
     const meshTerm = params.get('meshTerm');
     const geneIDs = params.get('geneIDs');
+    const fetchConfig = {
+        method: "GET",
+        headers: {
+            "content-type": "application/json"
+        }
+    }
 
     let fetchUrl;
     if (geneId) {
@@ -20,7 +26,11 @@ function fetchResults(page) {
         fetchUrl = `/searchGene?geneID=${geneId}&page=${page}`;
     } else if (meshTerm) {
         console.log("MeSH Term Search: ", meshTerm);
-        fetchUrl = `/searchMesh?meshTerm=${meshTerm}&page=${page}`;
+        fetchUrl = `/searchMesh?page=${page}`;
+        fetchConfig.headers = {
+            "content-type": "application/json",
+            "meshTerm": meshTerm
+        }
     } else if (geneIDs) {
         console.log("Multiple Genes Search: ", geneIDs);
         fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}`;
@@ -30,7 +40,7 @@ function fetchResults(page) {
     }
 
     console.log("Fetching URL: ", fetchUrl);
-    fetch(fetchUrl)
+    fetch(fetchUrl, fetchConfig)
         .then(response => response.json())
         .then(data => {
             populateTable(data.results);
