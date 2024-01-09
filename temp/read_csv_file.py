@@ -30,17 +30,17 @@ def write_to_json(data, outfileName):
         json.dump(data, output)
 
 if __name__ == '__main__':
-    geneData = pd.read_csv('BoehringerProvidedPackages/combined.csv')
+    geneData = pd.read_csv('../BoehringerProvidedPackages/combined.csv')
     # geneData = pd.read_csv('BoehringerProvidedPackages/combined_testset.csv')
     geneIDs = get_geneIDs(geneData)
     geneDict = {
         "geneIDs": geneIDs
     }
-    write_to_json(geneDict, "temp/geneIDs.json")
+    write_to_json(geneDict, "geneIDs.json")
    
    # print(get_mesh(geneData))
     meshes = get_mesh(geneData)
     meshDict = {
         "meshes": meshes
     }
-    write_to_json(meshDict, "temp/meshes.json")
+    write_to_json(meshDict, "meshes.json")
