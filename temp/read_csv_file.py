@@ -33,6 +33,7 @@ if __name__ == '__main__':
     geneData = pd.read_csv('../BoehringerProvidedPackages/combined.csv')
     # geneData = pd.read_csv('BoehringerProvidedPackages/combined_testset.csv')
     geneIDs = get_geneIDs(geneData)
+    geneIDs.sort()
     geneDict = {
         "geneIDs": geneIDs
     }
@@ -40,6 +41,7 @@ if __name__ == '__main__':
    
    # print(get_mesh(geneData))
     meshes = get_mesh(geneData)
+    meshes.sort()
     meshDict = {
         "meshes": meshes
     }

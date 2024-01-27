@@ -177,50 +177,40 @@
         <!-- Search by Gene-ID -->
         <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); })()">Search by Gene-ID</button>
         <div id="dropdown1" class="dropdown-content">
-            <input type="text" id="searchInput" placeholder="Enter Gene ID">
+            <input type="text" id="searchInput" placeholder="Enter Gene ID"/>
+            <select id="geneSelections" onchange="combo(this, 'demo')">
+                {% for ID in geneIDs %}
+                    <option value="{{ID}}">{{ ID }}</option>
+                {% endfor %}
+            </select>
             <button id="searchButton" class="rounded-button">Search</button>
-                    <div class="scrollable-content">
-                <!-- <a href="#">Gene Option 1</a>
-                <a href="#">Gene Option 2</a>
-                <a href="#">Gene Option 3</a>
-                <a href="#">Gene Option 4</a>
-                <a href="#">Gene Option 5</a> -->
-                <select id="geneIDs">
-                    <option value="test">test option 1</option>
-                    <option value="test2">test option 2</option>
-                </select>
-            </div>
         </div>
 
         <!-- Search by MeSH -->
         <button class="rounded-button" id="meshButton" onclick="(function() { toggleDropdown('dropdown2'); })()">Search by MeSH</button>
         <div id="dropdown2" class="dropdown-content">
-            <input type="text" id="meshInput" placeholder="Enter MeSH Term">
+            <input type="text" id="meshInput" placeholder="Enter MeSH Term"/>
+            <select id="meshSelections">
+                {% for mesh in meshTerms %}
+                    <option value="{{mesh}}">{{ mesh }}</option>
+                {% endfor %}
+            </select>
             <button id="meshSearchButton" class="rounded-button">Search</button>
-            <div class="scrollable-content">
-                <a href="#">MeSH Option 1</a>
-                <a href="#">MeSH Option 2</a>
-                <a href="#">MeSH Option 3</a>
-                <a href="#">MeSH Option 4</a>
-                <a href="#">MeSH Option 5</a>
-            </div>
         </div>
 
         <!-- Search by Multiple Genes -->
         <button class="rounded-button" id="multipleIDbutton" onclick="(function() { toggleDropdown('dropdown3'); })()">Search by Multiple</button>
         <div id="dropdown3" class="dropdown-content">
-            <input type="text" id="multiGeneInput" placeholder="Enter Gene IDs">
+            <input type="text" id="multiGeneInput" placeholder="Enter Gene IDs"/>
+            <select id="multipleGeneSelections">
+                {% for ID in geneIDs %}
+                    <option value="{{ID}}">{{ ID }}</option>
+                {% endfor %}
+            </select>
             <button id="multiGeneSearchButton" class="rounded-button">Search</button>
-            <div class="scrollable-content">
-                <a href="#">Multi-Gene Option 1</a>
-                <a href="#">Multi-Gene Option 2</a>
-                <a href="#">Multi-Gene Option 3</a>
-                <a href="#">Multi-Gene Option 4</a>
-                <a href="#">Multi-Gene Option 5</a>
             </div>
         </div>
     </div>
-</div>
 
     <div class="search-container" id="searchContainer">
         <p> Select an option from above. </p>
@@ -230,27 +220,14 @@
 
     <script src="static/functions.js"></script>
 
-        <script>
+    <script>
         document.getElementById('searchButton').addEventListener('click', function() {
             var geneId = document.getElementById('searchInput').value;
             window.location.href = '/static/results.html?geneID=' + encodeURIComponent(geneId) + '&page=1';
 
         });
     </script>
-    <script src="static/geneIDs.json">
-        // var geneList = document.getElementById('geneIDs');
-        $(function() {
-            var geneList = document.getElementById('geneIDs');
-            $.each(geneList, function(i, option) {
-                $('#geneIDs').append($('<option/>').attr("value", option).text(option));
-            });
-        });
-
-    </script>
 
 
 </body>
 </html>
-
-
-
