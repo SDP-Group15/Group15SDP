@@ -1,11 +1,12 @@
 from flask import Flask, render_template, jsonify, request, send_file
 from Backend import openConnection, searchByGene, searchByMesh, searchByGeneIDs
+from templates.static.dropdownLists import geneIDs, meshTerms
 import json
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', geneIDs=geneIDs, meshTerms=meshTerms)
 
 
 def format_results(raw_results):
