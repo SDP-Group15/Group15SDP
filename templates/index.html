@@ -12,7 +12,7 @@
     
     <link rel="stylesheet" type="text/CSS" href="static/style.css">
 
-    <title>Basic Flask App</title>
+    <title>MeSH Mining</title>
     <style>
         body /* eliminate white border and change background */
         {
@@ -180,11 +180,15 @@
             <input type="text" id="searchInput" placeholder="Enter Gene ID">
             <button id="searchButton" class="rounded-button">Search</button>
                     <div class="scrollable-content">
-                <a href="#">Gene Option 1</a>
+                <!-- <a href="#">Gene Option 1</a>
                 <a href="#">Gene Option 2</a>
                 <a href="#">Gene Option 3</a>
                 <a href="#">Gene Option 4</a>
-                <a href="#">Gene Option 5</a>
+                <a href="#">Gene Option 5</a> -->
+                <select id="geneIDs">
+                    <option value="test">test option 1</option>
+                    <option value="test2">test option 2</option>
+                </select>
             </div>
         </div>
 
@@ -225,6 +229,7 @@
     <div id="searchResults" class="search-results"></div>
 
     <script src="static/functions.js"></script>
+
         <script>
         document.getElementById('searchButton').addEventListener('click', function() {
             var geneId = document.getElementById('searchInput').value;
@@ -232,6 +237,18 @@
 
         });
     </script>
+    <script src="static/geneIDs.json">
+        // var geneList = document.getElementById('geneIDs');
+        $(function() {
+            var geneList = document.getElementById('geneIDs');
+            $.each(geneList, function(i, option) {
+                $('#geneIDs').append($('<option/>').attr("value", option).text(option));
+            });
+        });
+
+    </script>
+
+
 </body>
 </html>
 
