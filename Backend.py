@@ -1,6 +1,7 @@
 from psycopg2 import connect
 import os
 import csv
+import math
 import simplejson
 import json
 
@@ -16,41 +17,117 @@ def openConnection(dbName: str = None) -> type(connect()):
     return conn
 
 
-def searchByGene(gene: str, connection: type(connect())) -> tuple:
-    cursor = connection.cursor() 
-
-    cursor.execute(
-        f"SELECT * FROM \"GENE\" WHERE \"GeneID\" = '{gene}' ORDER BY \"p_Value\" ASC;")
-    
-    output = cursor.fetchall() 
-    
-    return list(output), simplejson.dumps(output, indent=2)
-#   **returns tuple access the elements 0 and 1 accordingly**
-
-
-def searchByMesh(mesh: str, connection: type(connect())) -> tuple:
-    cursor = connection.cursor() 
-
-    cursor.execute(
-        f"SELECT * FROM \"GENE\" WHERE \"MeSH\" LIKE '{mesh}' ORDER BY \"p_Value\" ASC;") #may need to change like depending
-    
-    output = cursor.fetchall() 
-
-    return list(output), simplejson.dumps(output, indent=2)
-
-
-def multipleByGeneId(geneList: list, connection: type(connect())) ->  tuple:
+def searchByGene(gene: str, connection: type(connect()), page: int, per_page: int) -> dict:
     cursor = connection.cursor()
-    
-    output = []
-    for gene in geneList:
-        cursor.execute(
-            f"SELECT * FROM \"GENE\" WHERE \"GeneID\" = '{gene}' ORDER BY \"p_Value\" ASC;")
-        tempregister = cursor.fetchall()
-        if(tempregister): output+= tempregister
+    offset = (page - 1) * per_page
 
-    return output, simplejson.dumps(output, indent=2)
+    cursor.execute(
+        f"""
+        SELECT *
+        FROM "GENE"
+        WHERE "GeneID" = '{gene}'
+        ORDER BY "p_Value" ASC
+        LIMIT {per_page} OFFSET {offset};
+        """
+    )
 
+    # Fetching the results for the current page
+    output = cursor.fetchall()
+
+    # Fetching the total number of records for pagination
+    cursor.execute(f"SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" = '{gene}'")
+    total_records = cursor.fetchone()[0]
+
+    # Constructing the response
+    results = [{
+        'id': row[0],
+        'description': row[1],
+        'score': row[2],
+        'value': row[3],
+        'references': row[4].split(',') if row[4] else []
+    } for row in output]
+
+    return {
+        'results': results,
+        'total': total_records,
+        'page': page,
+        'per_page': per_page,
+        'total_pages': math.ceil(total_records / per_page)
+    }
+
+
+def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: int) -> dict:
+    cursor = connection.cursor()
+    offset = (page - 1) * per_page
+
+    # Adjusted query using the 'MeSH' column
+    cursor.execute(
+        f"""
+        SELECT *
+        FROM "GENE"
+        WHERE "MeSH" LIKE %s
+        ORDER BY "p_Value" ASC
+        LIMIT {per_page} OFFSET {offset};
+        """, (f"%{mesh}%",)
+    )
+
+    output = cursor.fetchall()
+
+    # Counting records for pagination
+    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"MeSH\" LIKE %s", (f"%{mesh}%",))
+    total_records = cursor.fetchone()[0]
+
+    results = [{
+        'id': row[0],
+        'description': row[1],
+        'score': row[2],
+        'value': row[3],
+        'references': row[4].split(',') if row[4] else []
+    } for row in output]
+
+    return {
+        'results': results,
+        'total': total_records,
+        'page': page,
+        'per_page': per_page,
+        'total_pages': math.ceil(total_records / per_page)
+    }
+
+
+def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int, per_page: int) -> dict:
+    cursor = connection.cursor()
+    offset = (page - 1) * per_page
+
+    # Process input string to create a list of gene IDs
+    gene_ids = [x.strip() for x in gene_ids_str.split(',')]
+
+    # Constructing the query using IN clause
+    query = f"SELECT * FROM \"GENE\" WHERE \"GeneID\" IN %s ORDER BY \"p_Value\" ASC LIMIT %s OFFSET %s;"
+
+    cursor.execute(query, (tuple(gene_ids), per_page, offset))
+
+    output = cursor.fetchall()
+
+    # Counting records for pagination
+    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" IN %s", (tuple(gene_ids),))
+    total_records = cursor.fetchone()[0]
+
+    # Constructing results
+    results = [{
+        'id': row[0],
+        'description': row[1],
+        'score': row[2],
+        'value': row[3],
+        'references': row[4].split(',') if row[4] else []
+    } for row in output]
+
+    return {
+        'results': results,
+        'total': total_records,
+        'page': page,
+        'per_page': per_page,
+        'total_pages': math.ceil(total_records / per_page)
+    }
 
 def writeJsonToTxt(data: list, fileName: str = 'Demo.txt') -> None:
     with open(f"{fileName}","w") as f:

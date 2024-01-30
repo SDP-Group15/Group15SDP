@@ -12,7 +12,8 @@
     
     <link rel="stylesheet" type="text/CSS" href="static/style.css">
 
-    <title>Basic Flask App</title>
+    <title>MeSH Mining</title>
+
     <style>
         body /* eliminate white border and change background */
         {
@@ -173,39 +174,62 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Boehringer_Ingelheim_Logo.svg/2560px-Boehringer_Ingelheim_Logo.svg.png" alt="Fixed Image" class="fixed-image">
 
     <div class="box">
-
     <div class="container">
-        <button class="rounded-button" id="button1" onclick="(function() { toggleDropdown('dropdown1'); showText('Please enter a Gene-ID'); })()">Search by Gene-ID</button>
+        <!-- Search by Gene-ID -->
+        <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); })()">Search by Gene-ID</button>
         <div id="dropdown1" class="dropdown-content">
-            <input type="text" id="searchInput" oninput="filterDropdown('dropdown1')">
-            <div class="scrollable-content">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-                <a href="#">Option 4</a>
-                <a href="#">Option 5</a>
-            </div>
-
+            <input type="text" id="searchInput" placeholder="Enter Gene ID"/>
+            <select id="geneSelections" onchange="combo(this, 'demo')">
+                {% for ID in geneIDs %}
+                    <option value="{{ID}}">{{ ID }}</option>
+                {% endfor %}
+            </select>
+            <button id="searchButton" class="rounded-button">Search</button>
         </div>
 
-        <button class="rounded-button" onclick="showText('Please select a MeSH Term')">Search by MeSH</button>
-        <button class="rounded-button" onclick="showText('Please enter multiple Gene-IDs')">Search by Multiple</button>
-        
+        <!-- Search by MeSH -->
+        <button class="rounded-button" id="meshButton" onclick="(function() { toggleDropdown('dropdown2'); })()">Search by MeSH</button>
+        <div id="dropdown2" class="dropdown-content">
+            <input type="text" id="meshInput" placeholder="Enter MeSH Term"/>
+            <select id="meshSelections">
+                {% for mesh in meshTerms %}
+                    <option value="{{mesh}}">{{ mesh }}</option>
+                {% endfor %}
+            </select>
+            <button id="meshSearchButton" class="rounded-button">Search</button>
+        </div>
+
+        <!-- Search by Multiple Genes -->
+        <button class="rounded-button" id="multipleIDbutton" onclick="(function() { toggleDropdown('dropdown3'); })()">Search by Multiple</button>
+        <div id="dropdown3" class="dropdown-content">
+            <input type="text" id="multiGeneInput" placeholder="Enter Gene IDs"/>
+            <select id="multipleGeneSelections">
+                {% for ID in geneIDs %}
+                    <option value="{{ID}}">{{ ID }}</option>
+                {% endfor %}
+            </select>
+            <button id="multiGeneSearchButton" class="rounded-button">Search</button>
+            </div>
+        </div>
     </div>
-</div>
-
-    
-
-
-
 
     <div class="search-container" id="searchContainer">
         <p> Select an option from above. </p>
     </div>
 
+    <div id="searchResults" class="search-results"></div>
+
+    <script src="static/functions.js"></script>
+
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function() {
+            var geneId = document.getElementById('searchInput').value;
+            window.location.href = '/static/results.html?geneID=' + encodeURIComponent(geneId) + '&page=1';
+
+        });
+    </script>
+
+
 </body>
-<script src="static/functions.js"></script>
 </html>
-
-
 
