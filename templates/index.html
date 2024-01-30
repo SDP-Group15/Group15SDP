@@ -82,7 +82,8 @@
 
         .rounded-button /* button style conventions */
         {
-            font-family: 'Lora', sans-serif;
+            font-family: 'Arial', sans-serif;
+            font-weight: bolder;
             width: 100px; 
             height: 50px; 
             background-color: #0F3362;
@@ -116,7 +117,7 @@
         .dropdown-content /* USE CASE 1 options */
         {
             
-            margin-top: 100px;
+            margin-top: 115px;
             position: absolute;
             background-color: #0F3362;
             min-width: 200px;
@@ -195,7 +196,8 @@
         .search-container p 
         {
             font-size: 16px;
-            font-family: 'Lora', sans-serif;
+            font-family: 'Arial', sans-serif;
+            font-weight: bolder;
             margin: 0;
         }
         
@@ -212,8 +214,11 @@
     </header>
 
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Boehringer_Ingelheim_Logo.svg/2560px-Boehringer_Ingelheim_Logo.svg.png" alt="Fixed Image" class="fixed-image">
-
+    <div class="search-container" id="searchContainer">
+        <p> Select an option from below. </p>
+    </div>
     <div class="box">
+        
     <div class="container">
         <!-- Search by Gene-ID -->
         <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); })()">Search by Gene-ID</button>
@@ -253,9 +258,7 @@
         </div>
     </div>
 
-    <div class="search-container" id="searchContainer">
-        <p> Select an option from above. </p>
-    </div>
+    
 
     <div id="searchResults" class="search-results"></div>
 
