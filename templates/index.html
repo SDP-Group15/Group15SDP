@@ -96,11 +96,26 @@
             display: block; 
         }
 
+        .search-button
+        {
+            font-family: 'Arial', sans-serif;
+            font-weight: bolder;
+            width: 100px; 
+            height: 30px; 
+            background-color: white;
+            box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.6); 
+            color: #0F3362;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            display: flexbox; 
+        }
+
         /* dropdown content begin*/
 
         .dropdown-content /* USE CASE 1 options */
         {
-            display: none;
+            
             margin-top: 100px;
             position: absolute;
             background-color: #0F3362;
@@ -108,6 +123,8 @@
             max-height: fit-content;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
+            border-radius: 10px;
+            align-items: center;
         }
 
         .dropdown-content a /* style */
@@ -117,6 +134,10 @@
             display: block;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             color: aliceblue;
+        }
+
+        .text searchInput{
+            margin-top: 10px;
         }
 
         .dropdown-content a:hover 
@@ -135,6 +156,25 @@
             min-width: auto;
             padding: 10px;
             border: 1px solid #ccc;
+        }
+
+        #searchInput{
+            padding: 5px;
+            margin: 10px;
+        }
+
+        #meshInput{
+            padding: 5px;
+            margin: 10px;
+        }
+
+        #multiGeneInput{
+            padding: 5px;
+            margin: 10px;
+        }
+
+        .selection-dropdown{
+            margin: 10px;
         }
 
 
@@ -179,36 +219,36 @@
         <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); })()">Search by Gene-ID</button>
         <div id="dropdown1" class="dropdown-content">
             <input type="text" id="searchInput" placeholder="Enter Gene ID"/>
-            <select id="geneSelections" onchange="combo(this, 'demo')">
+            <select id="geneSelections" onchange="combo(this, 'demo')" class="selection-dropdown">
                 {% for ID in geneIDs %}
                     <option value="{{ID}}">{{ ID }}</option>
                 {% endfor %}
             </select>
-            <button id="searchButton" class="rounded-button">Search</button>
+            <button id="searchButton" class="search-button">Search</button>
         </div>
 
         <!-- Search by MeSH -->
         <button class="rounded-button" id="meshButton" onclick="(function() { toggleDropdown('dropdown2'); })()">Search by MeSH</button>
         <div id="dropdown2" class="dropdown-content">
             <input type="text" id="meshInput" placeholder="Enter MeSH Term"/>
-            <select id="meshSelections">
+            <select id="meshSelections" class="selection-dropdown">
                 {% for mesh in meshTerms %}
                     <option value="{{mesh}}">{{ mesh }}</option>
                 {% endfor %}
             </select>
-            <button id="meshSearchButton" class="rounded-button">Search</button>
+            <button id="meshSearchButton" class="search-button">Search</button>
         </div>
 
         <!-- Search by Multiple Genes -->
         <button class="rounded-button" id="multipleIDbutton" onclick="(function() { toggleDropdown('dropdown3'); })()">Search by Multiple</button>
         <div id="dropdown3" class="dropdown-content">
             <input type="text" id="multiGeneInput" placeholder="Enter Gene IDs"/>
-            <select id="multipleGeneSelections">
+            <select id="multipleGeneSelections" class="selection-dropdown">
                 {% for ID in geneIDs %}
                     <option value="{{ID}}">{{ ID }}</option>
                 {% endfor %}
             </select>
-            <button id="multiGeneSearchButton" class="rounded-button">Search</button>
+            <button id="multiGeneSearchButton" class="search-button">Search</button>
             </div>
         </div>
     </div>
