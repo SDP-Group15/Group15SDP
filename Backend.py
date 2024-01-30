@@ -129,7 +129,6 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int, p
         'total_pages': math.ceil(total_records / per_page)
     }
 
-
 def writeJsonToTxt(data: list, fileName: str = 'Demo.txt') -> None:
     with open(f"{fileName}","w") as f:
         f.write(data)
