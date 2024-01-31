@@ -6,6 +6,9 @@ In order to run this web application, start a local PostgreSQL server and use th
 ```sh
 flask --app UserInterface.py run
 ```
+
+Some specific information for various components of this project is included in `README_Files`.
+
 ## Dependencies
 
 1. Flask
