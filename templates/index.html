@@ -26,14 +26,14 @@
         {
         
             font-family: 'Antonio', sans-serif;
-            background-color: #0F3362;
+            background-color: #07312A;
             color: #dbdbdb;
             padding: 30px 0;
             text-align: center;
             font-size: 55px;
             
             text-decoration-line: underline;
-            text-decoration-color: #0a213f;
+            text-decoration-color: #04e57d;
             text-decoration-skip-ink: none; 
             text-underline-offset: 20px; 
             max-height: 100px; 
@@ -86,9 +86,9 @@
             font-weight: bolder;
             width: 100px; 
             height: 50px; 
-            background-color: #0F3362;
+            background-color: #07312A;
             box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.6); 
-            color: white;
+            color: #04e57d;
             border: none;
             cursor: pointer;
             border-radius: 10px;
@@ -105,7 +105,7 @@
             height: 30px; 
             background-color: white;
             box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.6); 
-            color: #0F3362;
+            color: #07312A;
             border: none;
             cursor: pointer;
             border-radius: 10px;
@@ -119,7 +119,7 @@
             
             margin-top: 115px;
             position: absolute;
-            background-color: #0F3362;
+            background-color: #07312A;
             min-width: 200px;
             max-height: fit-content;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -211,7 +211,7 @@
         </div>
     </header>
 
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Boehringer_Ingelheim_Logo.svg/2560px-Boehringer_Ingelheim_Logo.svg.png" alt="Fixed Image" class="fixed-image">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg/2560px-Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png" alt="Fixed Image" class="fixed-image">
     <div class="search-container" id="searchContainer">
         <p> Select an option from below. </p>
     </div>
@@ -219,7 +219,7 @@
         
     <div class="container">
         <!-- Search by Gene-ID -->
-        <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); })()">Search by Gene-ID</button>
+        <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); closeOtherDropdowns('dropdown1');  })()">Search by Gene-ID</button>
         <div id="dropdown1" class="dropdown-content">
             <input type="text" id="searchInput" placeholder="Enter Gene ID"/>
             <select id="geneSelections" onchange="copyGeneToInput()" class="selection-dropdown">
