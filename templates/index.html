@@ -221,7 +221,7 @@
         
     <div class="container">
         <!-- Search by Gene-ID -->
-        <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); })()">Search by Gene-ID</button>
+        <button class="rounded-button" id="geneIDbutton" onclick="(function() { toggleDropdown('dropdown1'); closeOtherDropdowns('dropdown1');  })()">Search by Gene-ID</button>
         <div id="dropdown1" class="dropdown-content">
             <input type="text" id="searchInput" placeholder="Enter Gene ID"/>
             <select id="geneSelections" onchange="combo(this, 'demo')" class="selection-dropdown">
