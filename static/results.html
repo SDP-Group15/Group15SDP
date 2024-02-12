@@ -1,9 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Search Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- For header -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@200&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #dbdbdb; 
+            font-family: Arial, sans-serif; /* Change font to Arial */
+        }
+
+        header {
+            text-align: center; /* Center the header text */
+        }
+
+        .header {
+            font-family: 'Antonio', sans-serif;
+            background-color: #07312A;
+            color: #dbdbdb;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 55px;
+            text-decoration-line: underline;
+            text-decoration-color: #04e57d;
+            text-decoration-skip-ink: none; 
+            text-underline-offset: 20px; 
+            max-height: 100px; 
+        }
+
+        .header h1 {
+            margin-top: -40px; 
+        }
+
+        /* Center search results */
+        #resultsTable {
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center; /* Center the "Search Results" heading */
+        }
+
+        /* Additional styles for the table if needed */
+        table {
+            width: 80%; /* Adjust the width as needed */
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #07312A;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #07312A;
+            color: #dbdbdb;
+        }
+
+        #pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logo
+        {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .fixed-image {
+            width: 13%;
+            height: 16%;
+            margin: auto;
+        }
+    </style>   
 </head>
 <body>
+    <header>
+        <div class="header">
+            <h1>MeSH Mining</h1>
+        </div>
+    </header>
+
     <h1>Search Results</h1>
     <table id="resultsTable">
         <thead>
@@ -16,13 +109,21 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Add your data rows here -->
         </tbody>
     </table>
+
     <div id="pagination">
         <button id="prevPage">Previous</button>
         <span id="currentPage">1</span>
         <button id="nextPage">Next</button>
     </div>
     <script src="results.js"></script>
+
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg/2560px-Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png" alt="Fixed Image" class="fixed-image">
+    </div>
+    
 </body>
 </html>
+
