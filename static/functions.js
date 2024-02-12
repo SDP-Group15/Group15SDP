@@ -8,12 +8,13 @@ function showText(textId) {
 }
 
 function toggleDropdown(dropdownId) {
-var dropdown = document.getElementById(dropdownId);
-if (dropdown.style.display === 'block') {
-    dropdown.style.display = 'none';
-} else {
-    dropdown.style.display = 'block';
-}
+    var dropdown = document.getElementById(dropdownId);
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else { // Close all other dropdowns and then make this one appear
+        closeAllDropdowns();
+        dropdown.style.display = 'block';
+    }
 }
 
 function filterDropdown(dropdownId) {
@@ -90,4 +91,14 @@ document.getElementById('multiGeneSearchButton').addEventListener('click', funct
     }
 });
 
+function closeDropdown(dropdownId) {
+    var dropdown = document.getElementById(dropdownId);
+    dropdown.style.display = 'none';
+}
 
+function closeAllDropdowns() {
+    closeDropdown('dropdown1');
+    closeDropdown('dropdown2');
+    closeDropdown('dropdown3');
+    // Add more dropdown IDs here if needed
+}

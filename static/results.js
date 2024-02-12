@@ -97,4 +97,4 @@ function populateTable(results) {
 
     // Initial fetch for page 1 or the specified page
     fetchResults(currentPage);
-});
+});x
