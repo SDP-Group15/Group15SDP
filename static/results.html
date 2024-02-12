@@ -41,15 +41,6 @@
             max-height: 100px; 
         }
 
-        .fixed-image {
-            position: fixed;
-            bottom: 10px; 
-            left: 50%; 
-            transform: translateX(-50%);
-            width: 140px; 
-            height: auto; 
-        }
-
         .header h1 {
             margin-top: -40px; 
         }
@@ -71,7 +62,7 @@
         }
 
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #07312A;
             padding: 8px;
             text-align: left;
         }
@@ -85,6 +76,18 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        .logo
+        {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .fixed-image {
+            width: 13%;
+            height: 16%;
+            margin: auto;
+        }
     </style>   
 </head>
 <body>
@@ -93,9 +96,6 @@
             <h1>MeSH Mining</h1>
         </div>
     </header>
-
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg/2560px-Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png" alt="Fixed Image" class="fixed-image">
-    <div class="search-container" id="searchContainer">
 
     <h1>Search Results</h1>
     <table id="resultsTable">
@@ -112,11 +112,18 @@
             <!-- Add your data rows here -->
         </tbody>
     </table>
+
     <div id="pagination">
         <button id="prevPage">Previous</button>
         <span id="currentPage">1</span>
         <button id="nextPage">Next</button>
     </div>
     <script src="results.js"></script>
+
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg/2560px-Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png" alt="Fixed Image" class="fixed-image">
+    </div>
+    
 </body>
 </html>
+
