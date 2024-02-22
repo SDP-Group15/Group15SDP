@@ -60,10 +60,7 @@ function populateTable(results) {
     results.forEach(result => {
         const row = document.createElement('tr');
 
-        //uncomment the below lines to get the full link to each PubMed article
         //This needs to be edited to just show the reference instead of the full url
-
-        /*
         var references = [];
         console.log(result.references);
 
@@ -71,11 +68,9 @@ function populateTable(results) {
         for (var i = 0; i < len_ref; ++i){
             references.push('https://pubmed.ncbi.nlm.nih.gov/'+result.references[i]+'/');
         }
-        */
 
-        //comment out the line below when attempting to link the references to
-        //the pubmed site since references will already be defined on line 67
-        let references = result.references ? result.references.join(', ') : 'No references';
+        // the line below just populates the table with reference id
+        // let references = result.references ? result.references.join(', ') : 'No references';
 
         row.innerHTML = `
             <td>${result.id}</td>
