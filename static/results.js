@@ -59,19 +59,9 @@ function populateTable(results) {
 
     results.forEach(result => {
         const row = document.createElement('tr');
-
-        //This needs to be edited to just show the reference instead of the full url
-        var references = [];
-        console.log(result.references);
-
-        let len_ref = result.references.length;
-        for (var i = 0; i < len_ref; ++i){
-            references.push('https://pubmed.ncbi.nlm.nih.gov/'+result.references[i]+'/');
-        }
-
-        // the line below just populates the table with reference id
-        // let references = result.references ? result.references.join(', ') : 'No references';
-
+        let articleUrl = 'https://pubmed.ncbi.nlm.nih.gov/';
+        var references = result.references ? result.references.join(',') : 'No references';
+        references = articleUrl + references;
         row.innerHTML = `
             <td>${result.id}</td>
             <td>${result.description}</td>
