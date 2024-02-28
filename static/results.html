@@ -128,7 +128,7 @@
     <div id="loader"></div>
 
     <h1>Search Results</h1>
-    <div style="display: none;" id="temp">
+    <div style="display: none;" onload="setLoader()" id="temp">
 
     <table id="resultsTable">
         <thead>
@@ -147,9 +147,9 @@
 </div>
 
     <div id="pagination">
-        <button id="prevPage">Previous</button>
+        <button id="prevPage" onclick="setLoader()">Previous</button>
         <span id="currentPage">1</span>
-        <button id="nextPage">Next</button>
+        <button id="nextPage" onclick="setLoader()">Next</button>
     </div>
     <script src="results.js"></script>
 
@@ -157,11 +157,14 @@
         var temp;
 
         function setLoader() {
-            temp = setTimeout(showPage, 8000);
+            document.getElementById("temp").style.opacity = 0.5;
+            document.getElementById("loader").style.display = "block";
+            temp = setTimeout(showPage, 6100);
         }
 
         function showPage() {
             document.getElementById("loader").style.display = "none";
+            document.getElementById("temp").style.opacity = 1;
             document.getElementById("temp").style.display = "block";
         }
     </script>
