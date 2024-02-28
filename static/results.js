@@ -59,13 +59,25 @@ function populateTable(results) {
 
     results.forEach(result => {
         const row = document.createElement('tr');
-        let references = result.references ? result.references.join(', ') : 'No references';
+        let baseUrl = 'https://pubmed.ncbi.nlm.nih.gov/';
+        var references = result.references ? result.references.join(',') : 'No references';
+        references = baseUrl + references;
+
+        // create a new hyperlink element
+        var articleLink = document.createElement('a');
+        articleLink.setAttribute('href', references);
+        articleLink.setAttribute('target', '_blank');
+        articleLink.innerHTML = "Show articles";
+        // create new table data cell element
+        var td_reference = document.createElement('td');
+        td_reference.appendChild(articleLink); // append hyperlink to table cell
+
         row.innerHTML = `
             <td>${result.id}</td>
             <td>${result.description}</td>
             <td>${result.score || 'N/A'}</td>
-            <td>${result.value || 'N/A'}</td>
-            <td>${references}</td>`;
+            <td>${result.value || 'N/A'}`;
+        row.appendChild(td_reference);
         resultsTableBody.appendChild(row);
     });
 }
