@@ -90,16 +90,46 @@
             height: 16%;
             margin: auto;
         }
+
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 120px;
+            height: 120px;
+            margin: -76px 0 0 -76px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #04e57d;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+            }
+
+            @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+            }
+
+            @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+            }
     </style>   
+
 </head>
-<body>
+<body onload="setLoader()">
     <header>
         <div class="header">
             <h1>MeSH Mining</h1>
         </div>
     </header>
 
+    <div id="loader"></div>
+
     <h1>Search Results</h1>
+    <div style="display: none;" id="temp">
+
     <table id="resultsTable">
         <thead>
             <tr>
@@ -114,6 +144,7 @@
             <!-- Add your data rows here -->
         </tbody>
     </table>
+</div>
 
     <div id="pagination">
         <button id="prevPage">Previous</button>
@@ -122,6 +153,18 @@
     </div>
     <script src="results.js"></script>
 
+    <script>
+        var temp;
+
+        function setLoader() {
+            temp = setTimeout(showPage, 8000);
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("temp").style.display = "block";
+        }
+    </script>
     <div class="logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg/2560px-Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png" alt="Fixed Image" class="fixed-image">
     </div>
