@@ -128,22 +128,22 @@
     <div id="loader"></div>
 
     <h1>Search Results</h1>
-    <div style="display: none;" onload="setLoader()" id="temp">
+    <div style="display: none;" onload="setLoader()" id="tableResultsDiv">
 
-    <table id="resultsTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>Score</th>
-                <th>Value</th>
-                <th>References</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Add your data rows here -->
-        </tbody>
-    </table>
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Score</th>
+                    <th>Value</th>
+                    <th>References</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Add your data rows here -->
+            </tbody>
+        </table>
 </div>
 
     <div id="pagination">
@@ -157,15 +157,15 @@
         var temp;
 
         function setLoader() {
-            document.getElementById("temp").style.opacity = 0.5;
+            document.getElementById("tableResultsDiv").style.opacity = 0.5;
             document.getElementById("loader").style.display = "block";
             temp = setTimeout(showPage, 6100);
         }
 
         function showPage() {
             document.getElementById("loader").style.display = "none";
-            document.getElementById("temp").style.opacity = 1;
-            document.getElementById("temp").style.display = "block";
+            document.getElementById("tableResultsDiv").style.opacity = 1;
+            document.getElementById("tableResultsDiv").style.display = "block";
         }
     </script>
     <div class="logo">
