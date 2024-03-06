@@ -27,3 +27,7 @@ or
 ```sh
 python3 -m pip install simplejson
 ```
+4. scipy
+```sh
+pip install scipy
+```
