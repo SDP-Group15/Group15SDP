@@ -1,9 +1,9 @@
 from psycopg2 import connect
-import os
 import csv
 import math
 import simplejson
-import json
+import scipy
+from decimal import Decimal, getcontext
 
 
 def openConnection(dbName: str = None) -> type(connect()):
@@ -94,22 +94,23 @@ def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: in
     }
 
 
-def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int, per_page: int) -> dict:
+def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 0, per_page: int = 0) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
     # Process input string to create a list of gene IDs
-    gene_ids = [x.strip() for x in gene_ids_str.split(',')]
+    geneList = [x.strip() for x in gene_ids_str.split(',')]
 
     # Constructing the query using IN clause
-    query = f"SELECT * FROM \"GENE\" WHERE \"GeneID\" IN %s ORDER BY \"p_Value\" ASC LIMIT %s OFFSET %s;"
+    query="""SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes FROM "GENE"AS A WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE" AS B WHERE B."GeneID"=%s) GROUP BY A."MeSH" ORDER BY 4;"""
+    # query = f"SELECT * FROM \"GENE\" WHERE \"GeneID\" IN %s ORDER BY \"p_Value\" ASC LIMIT %s OFFSET %s;"
 
-    cursor.execute(query, (tuple(gene_ids), per_page, offset))
+    cursor.execute(query, (tuple(geneList), per_page, offset))
 
     output = cursor.fetchall()
 
     # Counting records for pagination
-    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" IN %s", (tuple(gene_ids),))
+    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" IN %s", (tuple(geneList),))
     total_records = cursor.fetchone()[0]
 
     # Constructing results
@@ -128,6 +129,23 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int, p
         'per_page': per_page,
         'total_pages': math.ceil(total_records / per_page)
     }
+
+def fishers_method(p_values: list) -> str:
+    #Precision set based on smallest value i.e. ~1.0e-319
+    getcontext().prec = 319
+
+    #cast trickery frontloads decimal places otherwise it would approximate to 0
+    p_values_decimal = [Decimal(p) for p in p_values]
+    p_values_float = [float(p) for p in p_values_decimal]
+    try:
+        combined_result = scipy.stats.combine_pvalues(p_values_float, method="fisher")
+
+        #returns as string -- can be changed with 
+        combined_p_value = str(float(combined_result[1]))
+        return combined_p_value
+    except Exception as e:
+        return str(0.0) #change this cast if changing to float
+    
 
 def writeJsonToTxt(data: list, fileName: str = 'Demo.txt') -> None:
     with open(f"{fileName}","w") as f:
