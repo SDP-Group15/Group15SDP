@@ -150,7 +150,13 @@ def fishers_method(p_values: list) -> str:
         return str(0.0) #change this cast if changing to float
     
 
-
+def show_tables():
+    connection, cursor = openConnection()
+    query = "SELECT column_name FROM information_schema.columns WHERE table_name = \"sdp152024\""
+    cursor.execute("SELECT \"PMIDs\" FROM \"GENE\"")
+    data = cursor.fetchall()
+    connection.close()
+    return data
 
 
 #***simple funcitonality test---------------------------------------------------------------------------------------***
@@ -162,7 +168,9 @@ def test():
 
 
 if __name__ == "__main__":
-    print(multipleByGene(geneList=[34,37]))
+    # print(multipleByGene(geneList=[18,25]))
+    # print(searchByMesh('Humans') )
+    print(show_tables() )
 
 
 

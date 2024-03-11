@@ -100,26 +100,49 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
 
     # Process input string to create a list of gene IDs
     geneList = [x.strip() for x in gene_ids_str.split(',')]
+    # print(geneList)
 
     # Constructing the query using IN clause
-    query="""SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes FROM "GENE"AS A WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE" AS B WHERE B."GeneID"=%s) GROUP BY A."MeSH" ORDER BY 4;"""
-    # query = f"SELECT * FROM \"GENE\" WHERE \"GeneID\" IN %s ORDER BY \"p_Value\" ASC LIMIT %s OFFSET %s;"
 
-    cursor.execute(query, (tuple(geneList), per_page, offset))
+    
+    query="""
+    SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
+    FROM "GENE"AS A
+    WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE"AS B WHERE B."GeneID"=%s)
+    GROUP BY A."MeSH"
+    ORDER BY 4
+    ASC LIMIT %s OFFSET %s;"""
 
-    output = cursor.fetchall()
+    output = []
+    for gene in geneList:
+        cursor.execute(query, (gene, per_page, offset))
+        rows = cursor.fetchall()
+
+        for row in rows:
+            row = list(row)
+            row[0] = multipleByGeneHelp(row[0])
+            output.append(row)
+
+            # this fix does not actually work, query needs to be redone to only include
+            # genes in geneList instead of all of them
+            # row[3] = geneList
+
 
     # Counting records for pagination
     cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" IN %s", (tuple(geneList),))
     total_records = cursor.fetchone()[0]
 
     # Constructing results
+    # will need to results to
+        # 'combined_pval': row[0],
+        # 'MeSH': row[1],
+        # 'num_genes': row[2],
+        # 'genes': row[3]
     results = [{
-        'id': row[0],
+        'id': row[3],
         'description': row[1],
-        'score': row[2],
-        'value': row[3],
-        'references': row[4].split(',') if row[4] else []
+        'score': row[0],
+        'value': row[2]
     } for row in output]
 
     return {
@@ -129,6 +152,18 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
         'per_page': per_page,
         'total_pages': math.ceil(total_records / per_page)
     }
+
+
+def multipleByGeneHelp(curCol):
+    size = len(curCol)
+
+    if(size>1):
+        #curcol is a list of multiple pvalues which we need to combine
+        return fishers_method(curCol)
+    else:
+        #See sql query *array_agg: curCol is a list with just one element, return that element
+        return curCol[0]
+    
 
 def fishers_method(p_values: list) -> str:
     #Precision set based on smallest value i.e. ~1.0e-319
