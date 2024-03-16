@@ -42,8 +42,8 @@ def searchByGene(gene: str, connection: type(connect()), page: int, per_page: in
     results = [{
         'id': row[0],
         'description': row[1],
-        'score': row[2],
-        'value': row[3],
+        'pVal': row[2],
+        'enrichment': row[3],
         'references': row[4].split(',') if row[4] else []
     } for row in output]
 
@@ -80,8 +80,8 @@ def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: in
     results = [{
         'id': row[0],
         'description': row[1],
-        'score': row[2],
-        'value': row[3],
+        'pVal': row[2],
+        'enrichment': row[3],
         'references': row[4].split(',') if row[4] else []
     } for row in output]
 
@@ -149,8 +149,8 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     results = [{
         'id': row[3],
         'description': row[1],
-        'score': row[0],
-        'value': row[2]
+        'pVal': row[0],
+        'enrichment': row[2]
     } for row in output]
 
     return {

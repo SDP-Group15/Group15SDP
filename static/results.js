@@ -75,8 +75,8 @@ function populateTable(results) {
         row.innerHTML = `
             <td>${result.id}</td>
             <td>${result.description}</td>
-            <td>${result.score || 'N/A'}</td>
-            <td>${result.value || 'N/A'}`;
+            <td>${result.pVal || 'N/A'}</td>
+            <td>${result.enrichment || 'N/A'}`;
         row.appendChild(td_reference);
         resultsTableBody.appendChild(row);
     });
