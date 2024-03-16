@@ -1,9 +1,9 @@
-import psycopg2
-import csv
-import simplejson
-import scipy
-from decimal import Decimal, getcontext     #for fishers_method
+import psycopg2 #db connection
+import simplejson #json formatting
 
+#for fishers_method:
+import scipy
+import decimal
 
 
 #***main functions--------------------------------------------------------------------------------------------------***
@@ -13,9 +13,8 @@ def openConnection() -> type(tuple()):
     try:
         # Establish a connection to the database
         db_config = {
-        'database': 'sdp152024',
         'host': 'seniordesign.cyzdvv3sqno4.us-east-1.rds.amazonaws.com',
-        'port': '5432',
+        'database': 'sdp152024',
         'user': 'postgres',
         'password': 'Uconn!2024'
         }
@@ -35,6 +34,7 @@ def openConnection() -> type(tuple()):
         raise
 
 
+#Use Case #1
 #         gene is type str     return type is tuple data(list) and str (json str)
 def searchByGene(gene: str) -> tuple[list,str]:
     connection, cursor = openConnection()
@@ -50,6 +50,7 @@ def searchByGene(gene: str) -> tuple[list,str]:
 #   **returns tuple access the elements 0 and 1 accordingly**
 
 
+#Use Case #2
 def searchByMesh(mesh: str) -> tuple[list,str]:
     connection, cursor = openConnection()
 
@@ -63,10 +64,12 @@ def searchByMesh(mesh: str) -> tuple[list,str]:
     return list(output), simplejson.dumps(output, indent=2)
 
 
+#Use Case #3
 def multipleByGene(geneList: list) ->  tuple[list,str]:
     connection, cursor = openConnection()
 
-    query="""SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
+    query="""
+    SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
     FROM "GENE"AS A
     WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE"AS B WHERE B."GeneID"=%s)
     GROUP BY A."MeSH"
@@ -78,28 +81,26 @@ def multipleByGene(geneList: list) ->  tuple[list,str]:
         rows = cursor.fetchall()
 
         for row in rows:
-            #type is tuple cast to list
-            temp=list(row)
+            #row formatting
+            row = list(row)
+            row[0]=multipleByGeneHelp(row[0])
 
-            #[0] is the index of a list of pvalues
-            if len(temp[0])>1:
-                #fishers_method() returns in string form for representation
-                temp[0]=fishers_method(temp[0])
-            else:
-                #otherwise the first element is a list with one element, get that one element
-                temp[0]=temp[0][0]
-
-            output.append(temp)
+            #add to output list
+            output.append(row) #default is tuple
 
     connection.close()
     return output, simplejson.dumps(output, indent=2)
+
+
+
+#***Search Related Functions----------------------------------------------------------------------------------------***
 
 
 def listAllGene() -> list[str]:
     connection, cursor = openConnection()
 
     cursor.execute(
-        f"SELECT DISTINCT \"GeneID\" FROM \"GENE\" ORDER BY \"GeneID\" ASC;")
+        """SELECT DISTINCT \"GeneID\" FROM \"GENE\" ORDER BY \"GeneID\" ASC;""")
     
     data = cursor.fetchall()
 
@@ -111,7 +112,7 @@ def listAllMesh() -> list[str]:
     connection, cursor = openConnection()
 
     cursor.execute(
-        f"SELECT \"MeSH\" FROM (SELECT * FROM \"GENE\" ORDER BY \"p_Value\" ASC) AS A;")
+        """SELECT \"MeSH\" FROM \"GENE\" ORDER BY \"MeSH\" ASC;""") #can be changed to order by pval
     
     data = cursor.fetchall()
     
@@ -122,6 +123,7 @@ def listAllMesh() -> list[str]:
 
 #***helper functions------------------------------------------------------------------------------------------------***
 
+
 def multipleByGeneHelp(curCol):
     size = len(curCol)
 
@@ -131,60 +133,45 @@ def multipleByGeneHelp(curCol):
     else:
         #See sql query *array_agg: curCol is a list with just one element, return that element
         return curCol[0]
+    
 
 def fishers_method(p_values: list) -> str:
-    #Precision set based on smallest value i.e. ~1.0e-319
-    getcontext().prec = 319
+    decimal.getcontext().prec = 319
 
-    #cast trickery frontloads decimal places otherwise it would approximate to 0
-    p_values_decimal = [Decimal(p) for p in p_values]
-    p_values_float = [float(p) for p in p_values_decimal]
+    #cast trickery frontloads decimal places otherwise float() would approximate to 0
+    p_values_decimal = [decimal.Decimal(p) for p in p_values]
     try:
-        combined_result = scipy.stats.combine_pvalues(p_values_float, method="fisher")
+        combined_result = scipy.stats.combine_pvalues(p_values_decimal, method="fisher")
 
         #returns as string -- can be changed with 
         combined_p_value = str(float(combined_result[1]))
         return combined_p_value
-    except Exception as e:
+    except:
         return str(0.0) #change this cast if changing to float
+    
+
+def show_tables():
+    connection, cursor = openConnection()
+    query = "SELECT column_name FROM information_schema.columns WHERE table_name = \"sdp152024\""
+    cursor.execute("SELECT \"PMIDs\" FROM \"GENE\"")
+    data = cursor.fetchall()
+    connection.close()
+    return data
 
 
-
-#***testing functions-----------------------------------------------------------------------------------------------***
-
-
-def writeJsonToTxt(data: list, fileName: str = 'Demo.txt') -> None:
-    with open(f"{fileName}","w") as f:
-        f.writelines(data)
-
-    return None
+#***simple funcitonality test---------------------------------------------------------------------------------------***
+def test():
+    pass
+    #,Combined pVals,MeSH Term,Num Genes,Genes,All pVals
 
 
-def writeToCsvFile(data: list, fileName: str = 'Demo.csv') -> None:
-    with open(f"{fileName}","w") as f:
-        csv_out = csv.writer(f)
-        csv_out.writerow(["GeneID", "MeSH", "p_value", "Enrich", "PMIDs"])
-        csv_out.writerows(data)
-
-    return None
-
-
-def main() -> None:
-
-    output = multipleByGene(geneList=[34,37])
-
-    # output = searchByMesh(mesh='Acyl-CoA Dehydrogenase')  #* manual use *
-    # output = searchByGene(gene=34)                        #* manual use *
-
-
-    print(output[0])
-    # writeToCsvFile(data=output[0])
-    # writeJsonToTxt(data=output[1])
-
-    print("\nDone!\n")
-    return
-#}
 
 
 if __name__ == "__main__":
-    main()
+    # print(multipleByGene(geneList=[18,25]))
+    # print(searchByMesh('Humans') )
+    print(show_tables() )
+
+
+
+
