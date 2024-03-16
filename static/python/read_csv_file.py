@@ -30,7 +30,7 @@ def write_to_json(data, outfileName):
         json.dump(data, output)
 
 if __name__ == '__main__':
-    geneData = pd.read_csv('../BoehringerProvidedPackages/combined.csv')
+    geneData = pd.read_csv('../../BoehringerProvidedPackages/combined.csv')
     # geneData = pd.read_csv('BoehringerProvidedPackages/combined_testset.csv')
     geneIDs = get_geneIDs(geneData)
     geneIDs.sort()
