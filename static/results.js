@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPage = parseInt(params.get('page')) || 1;
 
     const resultsTableBody = document.getElementById('resultsTable').querySelector('tbody');
+    const resultsTableHead = document.getElementById('resultsTable').querySelector('thead')
     const currentPageSpan = document.getElementById('currentPage');
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
@@ -43,7 +44,12 @@ function fetchResults(page) {
     fetch(fetchUrl, fetchConfig)
         .then(response => response.json())
         .then(data => {
-            populateTable(data.results);
+            if ( fetchUrl.includes("MultipleGenes") ) {
+                populateTableMultiple(data.results);
+            } else {
+                populateTable(data.results);
+            }
+            // populateTable(data.results);
             currentPage = page;
             currentPageSpan.textContent = currentPage;
             // Handle pagination buttons
@@ -56,6 +62,16 @@ function fetchResults(page) {
 
 function populateTable(results) {
     resultsTableBody.innerHTML = ''; // Clear existing rows
+    resultsTableHead.innerHTML = ''; // Clear existing rows
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <th>ID</th>
+        <th>Description</th>
+        <th>pVal</th>
+        <th>Enrichment</th>
+        <th>References</th>`;
+    resultsTableHead.appendChild(row);
 
     results.forEach(result => {
         const row = document.createElement('tr');
@@ -78,6 +94,30 @@ function populateTable(results) {
             <td>${result.pVal || 'N/A'}</td>
             <td>${result.enrichment || 'N/A'}`;
         row.appendChild(td_reference);
+        resultsTableBody.appendChild(row);
+    });
+}
+
+
+function populateTableMultiple(results) {
+    resultsTableBody.innerHTML = ''; // Clear existing rows
+    resultsTableHead.innerHTML = ''; // Clear existing rows
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <th>Combined pVals</th>
+        <th>MeSH Term</th>
+        <th>Num Genes</th>
+        <th>Genes</th>`;
+    resultsTableHead.appendChild(row);
+
+    results.forEach(result => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${result.combined_pval}</td>
+            <td>${result.mesh}</td>
+            <td>${result.num_genes || 'N/A'}</td>
+            <td>${result.genes || 'N/A'}`;
         resultsTableBody.appendChild(row);
     });
 }

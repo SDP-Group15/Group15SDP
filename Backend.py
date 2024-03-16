@@ -1,7 +1,6 @@
 from psycopg2 import connect
 import csv
 import math
-import simplejson
 import scipy
 from decimal import Decimal, getcontext
 
@@ -61,15 +60,8 @@ def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: in
     offset = (page - 1) * per_page
 
     # Adjusted query using the 'MeSH' column
-    cursor.execute(
-        f"""
-        SELECT *
-        FROM "GENE"
-        WHERE "MeSH" LIKE %s
-        ORDER BY "p_Value" ASC
-        LIMIT {per_page} OFFSET {offset};
-        """, (f"%{mesh}%",)
-    )
+    cursor.execute("""SELECT * FROM "GENE" WHERE "MeSH" = %s ORDER BY "p_Value" ASC LIMIT %s OFFSET %s;""",
+                   (mesh, per_page, offset) )
 
     output = cursor.fetchall()
 
@@ -100,15 +92,13 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
 
     # Process input string to create a list of gene IDs
     geneList = [x.strip() for x in gene_ids_str.split(',')]
-    # print(geneList)
     geneString = "("
     for gene in geneList:
         geneString += "'" + gene + "'" + ","
     geneString = geneString[:-1]
     geneString += ")"
-    # print(geneString)
 
-    # Constructing the query using IN clause
+    # Constructing the query
     query="""
     SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
     FROM "GENE"AS A
@@ -141,16 +131,11 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     total_records = cursor.fetchone()[0]
 
     # Constructing results
-    # will need to results to
-        # 'combined_pval': row[0],
-        # 'MeSH': row[1],
-        # 'num_genes': row[2],
-        # 'genes': row[3]
     results = [{
-        'id': row[3],
-        'description': row[1],
-        'pVal': row[0],
-        'enrichment': row[2]
+        'combined_pval': row[0],
+        'mesh': row[1],
+        'num_genes': row[2],
+        'genes': row[3]
     } for row in output]
 
     return {
