@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, send_file
 from Backend import openConnection, searchByGene, searchByMesh, searchByGeneIDs
-from templates.static.dropdownLists import geneIDs, meshTerms
+from static.dropdownLists import geneIDs, meshTerms
 import json
 app = Flask(__name__)
 
