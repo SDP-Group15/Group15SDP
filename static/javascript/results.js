@@ -23,24 +23,25 @@ function fetchResults(page) {
 
     let fetchUrl;
     if (geneId) {
-        console.log("Gene ID Search: ", geneId);
+        // console.log("Gene ID Search: ", geneId);
         fetchUrl = `/searchGene?geneID=${geneId}&page=${page}`;
     } else if (meshTerm) {
-        console.log("MeSH Term Search: ", meshTerm);
+        // console.log("MeSH Term Search: ", meshTerm);
         fetchUrl = `/searchMesh?page=${page}`;
         fetchConfig.headers = {
             "content-type": "application/json",
             "meshTerm": meshTerm
         }
     } else if (geneIDs) {
-        console.log("Multiple Genes Search: ", geneIDs);
+        // console.log("Multiple Genes Search: ", geneIDs);
         fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}`;
     } else {
         console.error('No search type specified');
         return;
     }
 
-    console.log("Fetching URL: ", fetchUrl);
+    // console.log("Fetching URL: ", fetchUrl);
+    // fetch api
     fetch(fetchUrl, fetchConfig)
         .then(response => response.json())
         .then(data => {
@@ -59,7 +60,7 @@ function fetchResults(page) {
         .catch(error => console.error('Error:', error));
 }
 
-
+// populate table for gene search and mesh search
 function populateTable(results) {
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
@@ -98,7 +99,7 @@ function populateTable(results) {
     });
 }
 
-
+// populate table for multiple gene search
 function populateTableMultiple(results) {
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
@@ -132,4 +133,4 @@ function populateTableMultiple(results) {
 
     // Initial fetch for page 1 or the specified page
     fetchResults(currentPage);
-});x
+});
