@@ -92,14 +92,10 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
 
     # Process input string to create a list of gene IDs
     geneList = [x.strip() for x in gene_ids_str.split(',')]
-    geneString = "("
-    for gene in geneList:
-        geneString += "'" + gene + "'" + ","
-    geneString = geneString[:-1]
-    geneString += ")"
+    geneIDs = tuple(geneList)
 
     # Constructing the query
-    query="""
+    OGquery="""
     SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
     FROM "GENE"AS A
     WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE"AS B WHERE B."GeneID" = %s)
@@ -107,13 +103,25 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     ORDER BY 4
     ASC LIMIT %s OFFSET %s;"""
 
-    cursor.execute(query, (gene, per_page, offset) )
+    query="""
+    SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,"MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY A."GeneID")AS listGenes
+    FROM "GENE"AS A
+    WHERE A."MeSH" IN(SELECT B."MeSH" FROM "GENE"AS B WHERE B."GeneID" IN %s )
+    GROUP BY A."MeSH"
+    ORDER BY 4
+    ASC LIMIT %s OFFSET %s;"""
+
+    cursor.execute(query, (geneIDs, per_page, offset) )
     queryResult = cursor.fetchall()
     output = []
+    
+    # search with just geneID = 22 to not show "Adolescent"
+    # for testing puposes --Isaiah
+    
     for row in queryResult:
         row = list(row)
         row[0] = multipleByGeneHelp(row[0])
-        
+
         i = 0
         ids = ""
         for id in row[3]:
@@ -177,7 +185,7 @@ def fishers_method(p_values: list) -> str:
 
 def writeJsonToTxt(data: list, fileName: str = 'Demo.txt') -> None:
     with open(f"{fileName}","w") as f:
-        f.write(data)
+        f.write(str(data))
 
     return 
 
