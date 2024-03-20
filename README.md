@@ -8,7 +8,11 @@ Welcome to the MeSH Mining Github repo. Instructions, user manuals, and various 
 Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Instructions to create the python virtual environment for MacOS are as follows:
 ```sh
 mkdir meshMining
+```
+```sh
 cd meshMining
+```
+```sh
 python3 -m venv .venv
 ```
 to activate the environment on MacOS, from within the `meshMining` directory type the following command:
@@ -19,7 +23,11 @@ to activate the environment on MacOS, from within the `meshMining` directory typ
 In order to create a python virtual environment on Windows, use the following commands:
 ```sh
 mkdir meshMining
+```
+```sh
 cd meshMining
+```
+```sh
 py -3 -m venv .venv
 ```
 To activate the environment on Windows, from within the `meshMining` directory, type the following command:
