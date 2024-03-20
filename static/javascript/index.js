@@ -1,11 +1,4 @@
-function showText(textId) {
-    var textElement = document.getElementById(textId);
-    if (textElement.style.display === "none") {
-        textElement.style.display = "block";
-    } else {
-        textElement.style.display = "none";
-    }
-}
+// Functions for dropdowns
 
 function toggleDropdown(dropdownId) {
     var dropdown = document.getElementById(dropdownId);
@@ -17,60 +10,57 @@ function toggleDropdown(dropdownId) {
     }
 }
 
-function filterDropdown(dropdownId) {
-var input, filter, ul, a, i;
-input = document.getElementById("searchInput");
-filter = input.value.toUpperCase();
-ul = document.getElementById(dropdownId);
-
-a = ul.getElementsByTagName("a");
-for (i = 0; i < a.length; i++) {
-    var txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        a[i].style.display = "";
-    } else {
-        a[i].style.display = "none";
-    }
-}
+// closes all dropdowns
+function closeAllDropdowns() {
+    closeDropdown('dropdown1');
+    closeDropdown('dropdown2');
+    closeDropdown('dropdown3');
+    // Add more dropdown IDs here if needed
 }
 
-document.getElementById('searchButton').addEventListener('click', function() {
-    var geneId = document.getElementById('searchInput').value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/searchGene?geneID=' + encodeURIComponent(geneId), true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            updatePageWithResults(response);
-        }
-    };
-    xhr.send();
-});
+// closes a single dropdown
+function closeDropdown(dropdownId) {
+    var dropdown = document.getElementById(dropdownId);
+    dropdown.style.display = 'none';
+}
 
-function updatePageWithResults(results) {
-    var resultsDiv = document.getElementById('searchResults');
-    resultsDiv.innerHTML = '';
+// Functions to copy dropdown lists into the search input
 
-    if (Array.isArray(results)) {
-        results.forEach(function(result) {
-            // the below line is properties we want to display
-            var content = 'ID: ' + result.id + ', Description: ' + result.description + ', Score: ' + result.score + ', References: ' + result.references.join(', ');
-            var p = document.createElement('p');
-            p.textContent = content;
-            resultsDiv.appendChild(p);
-        });
+// copies gene into search bar
+function copyGeneToInput(){
+    var sel = document.getElementById("geneSelections");
+    var val = sel.options[sel.selectedIndex].value;
+    document.getElementById("searchInput").value = val;
+}
+
+// copies mesh into search bar
+function copyMeshToInput(){
+    var sel = document.getElementById("meshSelections");
+    var val = sel.options[sel.selectedIndex].value;
+    document.getElementById("meshInput").value = val;
+}
+
+// copies multiple genes into search bar and formats them properly
+function copyMultipleGenesToInput(){
+    var sel = document.getElementById("multipleGeneSelections");
+    var val = sel.options[sel.selectedIndex].value;
+    var userInput = document.getElementById("multiGeneInput");
+    if (userInput.value == ""){
+        userInput.value = val;
     } else {
-        // in case the result is not an array (maybe an error message)
-        resultsDiv.textContent = results;
+        userInput.value += ',' + val;
     }
 }
 
+// Functions to go to results page
 
+// goes to results for gene-id search
 document.getElementById('searchButton').addEventListener('click', function() {
     var geneId = document.getElementById('searchInput').value;
     window.location.href = '/static/results.html?geneID=' + encodeURIComponent(geneId);
 });
 
+// goes to results for mesh search
 document.getElementById('meshSearchButton').addEventListener('click', function() {
     var meshTerm = document.getElementById('meshInput').value;
     if (meshTerm) {
@@ -82,6 +72,7 @@ document.getElementById('meshSearchButton').addEventListener('click', function()
 
 });
 
+// goes to results for multiple gene id search
 document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
     var geneIds = document.getElementById('multiGeneInput').value;
     if (geneIds) {
@@ -90,38 +81,3 @@ document.getElementById('multiGeneSearchButton').addEventListener('click', funct
         console.log("Gene IDs input is empty");
     }
 });
-
-function closeDropdown(dropdownId) {
-    var dropdown = document.getElementById(dropdownId);
-    dropdown.style.display = 'none';
-}
-
-function closeAllDropdowns() {
-    closeDropdown('dropdown1');
-    closeDropdown('dropdown2');
-    closeDropdown('dropdown3');
-    // Add more dropdown IDs here if needed
-}
-
-function copyGeneToInput(){
-    var sel = document.getElementById("geneSelections");
-    var val = sel.options[sel.selectedIndex].value;
-    document.getElementById("searchInput").value = val;
-}
-
-function copyMeshToInput(){
-    var sel = document.getElementById("meshSelections");
-    var val = sel.options[sel.selectedIndex].value;
-    document.getElementById("meshInput").value = val;
-}
-
-function copyMultipleGenesToInput(){
-    var sel = document.getElementById("multipleGeneSelections");
-    var val = sel.options[sel.selectedIndex].value;
-    var userInput = document.getElementById("multiGeneInput");
-    if (userInput.value == ""){
-        userInput.value = val;
-    } else {
-        userInput.value += ',' + val;
-    }
-}
