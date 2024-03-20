@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
-    const geneId = params.get('geneID');
     let currentPage = parseInt(params.get('page')) || 1;
 
     const resultsTableBody = document.getElementById('resultsTable').querySelector('tbody');
@@ -68,7 +67,7 @@ function populateTable(results) {
     const row = document.createElement('tr');
     row.innerHTML = `
         <th>ID</th>
-        <th>Description</th>
+        <th>MeSH Term</th>
         <th>pVal</th>
         <th>Enrichment</th>
         <th>References</th>`;
@@ -88,12 +87,12 @@ function populateTable(results) {
         // create new table data cell element
         var td_reference = document.createElement('td');
         td_reference.appendChild(articleLink); // append hyperlink to table cell
-
+        console.log(typeof(result.pVal));
         row.innerHTML = `
             <td>${result.id}</td>
-            <td>${result.description}</td>
-            <td>${result.pVal || 'N/A'}</td>
-            <td>${result.enrichment || 'N/A'}`;
+            <td>${result.mesh}</td>
+            <td>${parseFloat(result.pVal).toExponential(2) || 'N/A'}</td>
+            <td>${parseFloat(result.enrichment).toFixed(2) || 'N/A'}`;
         row.appendChild(td_reference);
         resultsTableBody.appendChild(row);
     });
@@ -115,7 +114,7 @@ function populateTableMultiple(results) {
     results.forEach(result => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${result.combined_pval}</td>
+            <td>${parseFloat(result.combined_pval).toExponential(2) || 'N/A'}</td>
             <td>${result.mesh}</td>
             <td>${result.num_genes || 'N/A'}</td>
             <td>${result.genes || 'N/A'}`;
