@@ -38,7 +38,7 @@
                 <!-- Add your data rows here -->
             </tbody>
         </table>
-</div>
+    </div>
 
     <div id="pagination">
         <button id="prevPage" onclick="setLoader()">Previous</button>
@@ -47,21 +47,6 @@
     </div>
     <script src="../static/javascript/results.js"></script>
 
-    <script>
-        var temp;
-
-        function setLoader() {
-            document.getElementById("tableResultsDiv").style.opacity = 0.5;
-            document.getElementById("loader").style.display = "block";
-            temp = setTimeout(showPage, 6100);
-        }
-
-        function showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("tableResultsDiv").style.opacity = 1;
-            document.getElementById("tableResultsDiv").style.display = "block";
-        }
-    </script>
     <div class="logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg/2560px-Boehringer_Ingelheim_Logo_RGB_Accent_Green.svg.png" alt="Fixed Image" class="fixed-image">
     </div>
