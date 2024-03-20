@@ -68,13 +68,13 @@ function updatePageWithResults(results) {
 
 document.getElementById('searchButton').addEventListener('click', function() {
     var geneId = document.getElementById('searchInput').value;
-    window.location.href = '/results.html?geneID=' + encodeURIComponent(geneId) + '&page=1';
+    window.location.href = '/static/results.html?geneID=' + encodeURIComponent(geneId);
 });
 
 document.getElementById('meshSearchButton').addEventListener('click', function() {
     var meshTerm = document.getElementById('meshInput').value;
     if (meshTerm) {
-        window.location.href = '/static/results.html?meshTerm=' + encodeURIComponent(meshTerm) + '&page=1';
+        window.location.href = '/static/results.html?meshTerm=' + encodeURIComponent(meshTerm);
     } else {
         console.log("MeSH term input is empty");
     }
@@ -85,7 +85,7 @@ document.getElementById('meshSearchButton').addEventListener('click', function()
 document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
     var geneIds = document.getElementById('multiGeneInput').value;
     if (geneIds) {
-        window.location.href = '/static/results.html?geneIDs=' + encodeURIComponent(geneIds) + '&page=1';
+        window.location.href = '/static/results.html?geneIDs=' + encodeURIComponent(geneIds);
     } else {
         console.log("Gene IDs input is empty");
     }

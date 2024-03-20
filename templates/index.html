@@ -73,11 +73,6 @@
     <script src="../static/javascript/functions.js"></script>
 
     <script>
-        document.getElementById('searchButton').addEventListener('click', function() {
-            var geneId = document.getElementById('searchInput').value;
-            window.location.href = '/static/results.html?geneID=' + encodeURIComponent(geneId) + '&page=1';
-
-        });
 
         function copyGeneToInput(){
             var sel = document.getElementById("geneSelections");
