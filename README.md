@@ -9,16 +9,19 @@ Navigate to the main branch, click the "Code" dropdown button, click `Download Z
 
 2. Making a virtual environment (optional)
 Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Once in the `Group15SDP-main` folder, run the following command (MacOS or Linux, Windows commands given later):
+
 MacOS or Ubuntu
 ```sh
 python3 -m venv .venv
 ```
+
 Windows
 ```sh
 py -3 -m venv .venv
 ```
 
 Activate the environment from within the `Group15SDP-main` directory, by typing the following command:
+
 MacOS or Ubuntu
 ```sh
 . .venv/bin/activate
