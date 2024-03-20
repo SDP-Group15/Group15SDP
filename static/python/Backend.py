@@ -40,7 +40,7 @@ def searchByGene(gene: str, connection: type(connect()), page: int, per_page: in
     # Constructing the response
     results = [{
         'id': row[0],
-        'description': row[1],
+        'mesh': row[1],
         'pVal': row[2],
         'enrichment': row[3],
         'references': row[4].split(',') if row[4] else []
@@ -71,7 +71,7 @@ def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: in
 
     results = [{
         'id': row[0],
-        'description': row[1],
+        'mesh': row[1],
         'pVal': row[2],
         'enrichment': row[3],
         'references': row[4].split(',') if row[4] else []
