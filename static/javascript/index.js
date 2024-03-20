@@ -51,33 +51,3 @@ function copyMultipleGenesToInput(){
         userInput.value += ',' + val;
     }
 }
-
-// Functions to go to results page
-
-// goes to results for gene-id search
-// document.getElementById('searchButton').addEventListener('click', function() {
-//     var geneId = document.getElementById('searchInput').value;
-//     window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);
-// });
-
-// goes to results for mesh search
-// document.getElementById('meshSearchButton').addEventListener('click', function() {
-//     var meshTerm = document.getElementById('meshInput').value;
-//     if (meshTerm) {
-//         window.location.href = '/static/results.html?meshTerm=' + encodeURIComponent(meshTerm);
-//     } else {
-//         console.log("MeSH term input is empty");
-//     }
-
-
-// });
-
-// goes to results for multiple gene id search
-// document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
-//     var geneIds = document.getElementById('multiGeneInput').value;
-//     if (geneIds) {
-//         window.location.href = '/static/results.html?geneIDs=' + encodeURIComponent(geneIds);
-//     } else {
-//         console.log("Gene IDs input is empty");
-//     }
-// });
