@@ -4,44 +4,37 @@ Welcome to the MeSH Mining Github repo. Instructions, user manuals, and various 
 
 ## Running the MeSH Mining Website
 
-1. Making a virtual environment (optional)
-Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Instructions to create the python virtual environment for MacOS are as follows:
-```sh
-mkdir meshMining
-```
-```sh
-cd meshMining
-```
+1. Download a zip file of the Group15SDP repo
+Navigate to the main branch, click the "Code" dropdown button, click `Download ZIP` and navigate to the downloaded folder (`Group15SDP-main`).
+
+2. Making a virtual environment (optional)
+Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Once in the `Group15SDP-main` folder, run the following command (MacOS or Linux, Windows commands given later):
+MacOS or Ubuntu
 ```sh
 python3 -m venv .venv
 ```
-to activate the environment on MacOS, from within the `meshMining` directory type the following command:
-```sh
-. .venv/bin/activate
-```
-
-In order to create a python virtual environment on Windows, use the following commands:
-```sh
-mkdir meshMining
-```
-```sh
-cd meshMining
-```
+Windows
 ```sh
 py -3 -m venv .venv
 ```
-To activate the environment on Windows, from within the `meshMining` directory, type the following command:
+
+Activate the environment from within the `Group15SDP-main` directory, by typing the following command:
+MacOS or Ubuntu
+```sh
+. .venv/bin/activate
+```
+Windows
 ```sh
 .venv\Scripts\activate
 ```
 
-2. Installing the dependencies
-Once the python virtual environment has been activated, the dependencies for the project need to be installed. In order to install the dependencies, run the following command in the home directory of the project:
+3. Installing the dependencies
+From within the `Group15SDP-main` folder, install the dependencies by typing the following command (activate the environment first if step 2 was completed):
 ```sh
 pip install -r requirements.txt
 ```
 
-3. Start the server for the website
+4. Start the server for the website
 
 Finally, start the website by runnning the following command:
 ```sh
