@@ -70,33 +70,9 @@
 
     <div id="searchResults" class="search-results"></div>
 
-    <script src="../static/javascript/functions.js"></script>
+    <script src="../static/javascript/index.js"></script>
 
-    <script>
 
-        function copyGeneToInput(){
-            var sel = document.getElementById("geneSelections");
-            var val = sel.options[sel.selectedIndex].value;
-            document.getElementById("searchInput").value = val;
-        }
-
-        function copyMeshToInput(){
-            var sel = document.getElementById("meshSelections");
-            var val = sel.options[sel.selectedIndex].value;
-            document.getElementById("meshInput").value = val;
-        }
-        
-        function copyMultipleGenesToInput(){
-            var sel = document.getElementById("multipleGeneSelections");
-            var val = sel.options[sel.selectedIndex].value;
-            var userInput = document.getElementById("multiGeneInput");
-            if (userInput.value == ""){
-                userInput.value = val;
-            } else {
-                userInput.value += ',' + val;
-            }
-        }
-    </script>
 </body>
 </html>
 

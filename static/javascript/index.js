@@ -102,3 +102,26 @@ function closeAllDropdowns() {
     closeDropdown('dropdown3');
     // Add more dropdown IDs here if needed
 }
+
+function copyGeneToInput(){
+    var sel = document.getElementById("geneSelections");
+    var val = sel.options[sel.selectedIndex].value;
+    document.getElementById("searchInput").value = val;
+}
+
+function copyMeshToInput(){
+    var sel = document.getElementById("meshSelections");
+    var val = sel.options[sel.selectedIndex].value;
+    document.getElementById("meshInput").value = val;
+}
+
+function copyMultipleGenesToInput(){
+    var sel = document.getElementById("multipleGeneSelections");
+    var val = sel.options[sel.selectedIndex].value;
+    var userInput = document.getElementById("multiGeneInput");
+    if (userInput.value == ""){
+        userInput.value = val;
+    } else {
+        userInput.value += ',' + val;
+    }
+}
