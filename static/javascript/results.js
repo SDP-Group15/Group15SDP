@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPageSpan = document.getElementById('currentPage');
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
+    const tableResultsDiv = document.getElementById('tableResultsDiv');
 
 function fetchResults(page) {
+    // document.getElementById("tableResultsDiv").style.opacity = 0.5;
     const params = new URLSearchParams(window.location.search);
     const geneId = params.get('geneID');
     const meshTerm = params.get('meshTerm');
@@ -61,6 +63,7 @@ function fetchResults(page) {
 
 // populate table for gene search and mesh search
 function populateTable(results) {
+    // document.getElementById("tableResultsDiv").style.opacity = 1;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -96,10 +99,14 @@ function populateTable(results) {
         row.appendChild(td_reference);
         resultsTableBody.appendChild(row);
     });
+
+    document.getElementById("tableResultsDiv").style.opacity = 1;
+    
 }
 
 // populate table for multiple gene search
 function populateTableMultiple(results) {
+    // document.getElementById("tableResultsDiv").style.opacity = 1;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -120,6 +127,9 @@ function populateTableMultiple(results) {
             <td>${result.genes || 'N/A'}`;
         resultsTableBody.appendChild(row);
     });
+
+    document.getElementById("tableResultsDiv").style.opacity = 1;
+    
 }
 
     prevPageButton.addEventListener('click', () => {
@@ -139,8 +149,9 @@ function populateTableMultiple(results) {
 
 function setLoader() {
     document.getElementById("tableResultsDiv").style.opacity = 0.5;
-    document.getElementById("loader").style.display = "block";
+    document.getElementById("loader").style.display = "block";  
     setTimeout(showPage, 6100);
+    // showPage();
 }
 
 function showPage() {

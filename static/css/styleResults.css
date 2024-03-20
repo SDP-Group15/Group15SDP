@@ -57,26 +57,31 @@ th {
 
 
 /* styling for the footer */
+footer {
+    text-align: center;
+}
+
 .footer {
     margin-top: 20px;
     text-align: center;
     bottom: 0;
     left: 0;
-    position: relative;
+    position: fixed;
+    display: block;
 }
 
 #pagination {
+    margin-top: 20px;
     text-align: center;
-}
-
-#logo {
-    margin-top: 15px;
 }
 
 .fixed-image {
     width: 13%;
     height: 16%;
     margin: auto;
+    text-align: center;
+    margin-top: 15px;
+    bottom: 0;
 }
 
 /* Styling for the loading icon */
