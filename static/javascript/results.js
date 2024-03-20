@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPageSpan = document.getElementById('currentPage');
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
-    const tableResultsDiv = document.getElementById('tableResultsDiv');
 
 function fetchResults(page) {
     // document.getElementById("tableResultsDiv").style.opacity = 0.5;
@@ -100,7 +99,9 @@ function populateTable(results) {
         resultsTableBody.appendChild(row);
     });
 
-    document.getElementById("tableResultsDiv").style.opacity = 1;
+    tableResultsDiv.opacity = 1;
+    loader.display = "none"
+    tableResultsDiv.display = "block"
     
 }
 
@@ -128,7 +129,9 @@ function populateTableMultiple(results) {
         resultsTableBody.appendChild(row);
     });
 
-    document.getElementById("tableResultsDiv").style.opacity = 1;
+    tableResultsDiv.opacity = 1;
+    loader.display = "none"
+    tableResultsDiv.display = "block"
     
 }
 
@@ -146,16 +149,18 @@ function populateTableMultiple(results) {
 
 
 // functions for loading icon
-
+const tableResultsDiv = document.getElementById('tableResultsDiv').style;
+const loader = document.getElementById('loader').style;
 function setLoader() {
-    document.getElementById("tableResultsDiv").style.opacity = 0.5;
-    document.getElementById("loader").style.display = "block";  
-    setTimeout(showPage, 6100);
+    // document.getElementById("tableResultsDiv").style.opacity = 0.5;
+    tableResultsDiv.opacity = 0.5
+    loader.display = "block";  
+    // setTimeout(showPage, 6100);
     // showPage();
 }
 
 function showPage() {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("tableResultsDiv").style.opacity = 1;
-    document.getElementById("tableResultsDiv").style.display = "block";
+    loader.display = "none";
+    tableResultsDiv.opacity = 1;
+    tableResultsDiv.display = "block";
 }
