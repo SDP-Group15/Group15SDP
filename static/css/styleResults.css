@@ -54,15 +54,23 @@ th {
     color: #dbdbdb;
 }
 
-#pagination {
-    text-align: center;
+
+
+/* styling for the footer */
+.footer {
     margin-top: 20px;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    position: relative;
 }
 
-.logo
-{
-    margin-top: 10px;
+#pagination {
     text-align: center;
+}
+
+#logo {
+    margin-top: 15px;
 }
 
 .fixed-image {
@@ -71,6 +79,7 @@ th {
     margin: auto;
 }
 
+/* Styling for the loading icon */
 #loader {
     position: absolute;
     left: 50%;
