@@ -22,7 +22,7 @@ Windows
 py -3 -m venv .venv
 ```
 
-Activate the environment from within the `Group15SDP-main` directory, by typing the following command:
+Activate the environment from within the `Group15SDP-main` directory by typing the following command:
 
 MacOS or Ubuntu
 ```sh
