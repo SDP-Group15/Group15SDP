@@ -133,3 +133,18 @@ function populateTableMultiple(results) {
     // Initial fetch for page 1 or the specified page
     fetchResults(currentPage);
 });
+
+
+// functions for loading icon
+
+function setLoader() {
+    document.getElementById("tableResultsDiv").style.opacity = 0.5;
+    document.getElementById("loader").style.display = "block";
+    setTimeout(showPage, 6100);
+}
+
+function showPage() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("tableResultsDiv").style.opacity = 1;
+    document.getElementById("tableResultsDiv").style.display = "block";
+}

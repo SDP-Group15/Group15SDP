@@ -68,6 +68,23 @@
 
     <script src="../static/javascript/index.js"></script>
 
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function() {
+            var geneId = document.getElementById('searchInput').value;
+            window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);
+        });
+
+        document.getElementById('meshSearchButton').addEventListener('click', function() {
+            var meshTerm = document.getElementById('meshInput').value;
+            window.location.href = "{{ url_for('results') }}" + "?meshTerm=" + encodeURIComponent(meshTerm);
+        });
+
+        document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
+            var geneIds = document.getElementById('multiGeneInput').value;
+            window.location.href = "{{ url_for('results') }}" + "?geneIDs=" + encodeURIComponent(geneIds);
+        });
+    </script>
+
 </body>
 </html>
 

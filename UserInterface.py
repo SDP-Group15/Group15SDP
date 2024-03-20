@@ -7,21 +7,13 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', geneIDs=geneIDs, meshTerms=meshTerms)
 
-
-def format_results(raw_results):
-    formatted = []
-    for result in raw_results:
-        formatted_result = {
-            'id': result[0],
-            'description': result[1],
-
-        }
-        formatted.append(formatted_result)
-    return formatted
+@app.route('/results', methods=['GET'])
+def results():
+    return render_template('results.html')
 
 
 @app.route('/searchGene', methods=['GET'])
-def searchByGene_api():
+def searchByGene_website():
     geneID = request.args.get('geneID')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
@@ -35,16 +27,14 @@ def searchByGene_api():
 
     return jsonify(response)
 
-
-
 @app.route('/searchMesh', methods = ['GET'])
-def searchByMesh_api():
+def searchByMesh_website():
     #mesh_term needs to be a header so that the mesh term can contain spaces
     mesh_term = request.headers.get('meshTerm')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
 
-    if not mesh_term:
+    if mesh_term is None:
         return jsonify({'error': 'No MeSH term provided'}), 400
 
     dbConnection = openConnection()
@@ -53,16 +43,13 @@ def searchByMesh_api():
 
     return jsonify(response)
 
-
-
-
 @app.route('/searchMultipleGenes', methods=['GET'])
-def searchMultipleGenes_api():
+def searchMultipleGenes_website():
     gene_ids = request.args.get('geneIDs')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
 
-    if not gene_ids:
+    if gene_ids is None:
         return jsonify({'error': 'No gene IDs provided'}), 400
 
     dbConnection = openConnection()
