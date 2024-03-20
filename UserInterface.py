@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_file
+from flask import Flask, render_template, jsonify, request
 from static.python.Backend import openConnection, searchByGene, searchByMesh, searchByGeneIDs
 from static.python.dropdownLists import geneIDs, meshTerms
 app = Flask(__name__)
@@ -23,8 +23,8 @@ def format_results(raw_results):
 @app.route('/searchGene', methods=['GET'])
 def searchByGene_api():
     geneID = request.args.get('geneID')
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 20, type=int)
+    page = request.args.get('page', default=1, type=int)
+    per_page = request.args.get('per_page', default=20, type=int)
 
     if geneID is None:
         return jsonify({'error': 'No parameter in request'}), 400
