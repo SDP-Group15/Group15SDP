@@ -108,13 +108,12 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     queryResult = cursor.fetchall()
     output = []
     
-    # search with just geneID = 22 to not show "Adolescent"
-    # for testing puposes --Isaiah
-    
+    # formatting results
     for row in queryResult:
         row = list(row)
         row[0] = multipleByGeneHelp(row[0])
 
+        # limiting the number of genes shown
         if (len(row[3]) > 5 ):
             ids = ""
             for i in range(6):
