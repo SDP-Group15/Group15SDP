@@ -95,44 +95,34 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     geneIDs = tuple(geneList)
 
     # Constructing the query
-    OGquery="""
-    SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
-    FROM "GENE"AS A
-    WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE"AS B WHERE B."GeneID" = %s)
-    GROUP BY A."MeSH"
-    ORDER BY 4
-    ASC LIMIT %s OFFSET %s;"""
 
     query="""
     SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,"MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY A."GeneID")AS listGenes
     FROM "GENE"AS A
-    WHERE A."MeSH" IN(SELECT B."MeSH" FROM "GENE"AS B WHERE B."GeneID" IN %s )
+    WHERE A."GeneID" IN %s
     GROUP BY A."MeSH"
-    ORDER BY 4
-    ASC LIMIT %s OFFSET %s;"""
+    ORDER BY 3
+    DESC LIMIT %s OFFSET %s;"""
 
     cursor.execute(query, (geneIDs, per_page, offset) )
     queryResult = cursor.fetchall()
     output = []
     
-    # search with just geneID = 22 to not show "Adolescent"
-    # for testing puposes --Isaiah
-    
+    # formatting results
     for row in queryResult:
         row = list(row)
         row[0] = multipleByGeneHelp(row[0])
 
-        i = 0
-        ids = ""
-        for id in row[3]:
-            ids += str(id) +","
-            i += 1
-            if i > 4:
-                break
-        ids+= "..."
-        row[3] = ids
+        # limiting the number of genes shown
+        if (len(row[3]) > 5 ):
+            ids = ""
+            for i in range(6):
+                ids += str(row[3][i]) + ","
+            ids += " . . ."
+            row[3] = ids
 
         output.append(row)
+    
 
     # Counting records for pagination
     cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" IN %s", (tuple(geneList),))
