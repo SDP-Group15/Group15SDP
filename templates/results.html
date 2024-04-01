@@ -28,6 +28,24 @@
     <div id="loader"></div>
 
     <h1>Search Results</h1>
+
+    <div class="sort-by-group">
+        <p>Sort By: 
+            <button>Gene ID</button>
+            <button>MeSH</button>
+            <button>pVal</button>
+            <button>Enrichment</button>
+        </p>
+    </div>
+
+    <div class="results-per-page">
+        <p>Results Per Page: 
+            <button onclick="changeNumResults(20)">20</button>
+            <button onclick="changeNumResults(40)">40</button>
+            <button>80</button>
+        </p>
+    </div>
+
     <div style="display: none;" id="tableResultsDiv">
 
         <table id="resultsTable">
@@ -40,7 +58,7 @@
         </table>
     </div>
     
-    <div id="pagination">
+    <div  style="display: none;" id="pagination">
         <button id="prevPage" onclick="setLoader()">Previous</button>
         <span id="currentPage">1</span>
         <button id="nextPage" onclick="setLoader()">Next</button>    

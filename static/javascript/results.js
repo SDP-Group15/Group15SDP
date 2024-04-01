@@ -14,6 +14,8 @@ function fetchResults(page) {
     const geneId = params.get('geneID');
     const meshTerm = params.get('meshTerm');
     const geneIDs = params.get('geneIDs');
+    const per_page = params.get('per_page') ?? '20';
+
     const fetchConfig = {
         method: "GET",
         headers: {
@@ -24,17 +26,17 @@ function fetchResults(page) {
     let fetchUrl;
     if (geneId) {
         // console.log("Gene ID Search: ", geneId);
-        fetchUrl = `/searchGene?geneID=${geneId}&page=${page}`;
+        fetchUrl = `/searchGene?geneID=${geneId}&page=${page}&per_page=${per_page}`;
     } else if (meshTerm) {
         // console.log("MeSH Term Search: ", meshTerm);
-        fetchUrl = `/searchMesh?page=${page}`;
+        fetchUrl = `/searchMesh?page=${page}&per_page=${per_page}`;
         fetchConfig.headers = {
             "content-type": "application/json",
             "meshTerm": meshTerm
         }
     } else if (geneIDs) {
         // console.log("Multiple Genes Search: ", geneIDs);
-        fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}`;
+        fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}&per_page=${per_page}`;
     } else {
         console.error('No search type specified');
         return;
@@ -89,7 +91,7 @@ function populateTable(results) {
         // create new table data cell element
         var td_reference = document.createElement('td');
         td_reference.appendChild(articleLink); // append hyperlink to table cell
-        console.log(typeof(result.pVal));
+        // console.log(typeof(result.pVal));
         row.innerHTML = `
             <td>${result.id}</td>
             <td>${result.mesh}</td>
@@ -99,9 +101,7 @@ function populateTable(results) {
         resultsTableBody.appendChild(row);
     });
 
-    tableResultsDiv.opacity = 1;
-    loader.display = "none"
-    tableResultsDiv.display = "block"
+    showPage();
     
 }
 
@@ -129,17 +129,17 @@ function populateTableMultiple(results) {
         resultsTableBody.appendChild(row);
     });
 
-    tableResultsDiv.opacity = 1;
-    loader.display = "none"
-    tableResultsDiv.display = "block"
+    showPage();
     
 }
 
     prevPageButton.addEventListener('click', () => {
+        setLoader();
         if (currentPage > 1) fetchResults(currentPage - 1);
     });
 
     nextPageButton.addEventListener('click', () => {
+        setLoader();
         fetchResults(currentPage + 1);
     });
 
@@ -150,17 +150,37 @@ function populateTableMultiple(results) {
 
 // functions for loading icon
 const tableResultsDiv = document.getElementById('tableResultsDiv').style;
+const pagination = document.getElementById('pagination').style;
 const loader = document.getElementById('loader').style;
+
+// show the loading icon
 function setLoader() {
-    // document.getElementById("tableResultsDiv").style.opacity = 0.5;
     tableResultsDiv.opacity = 0.5
     loader.display = "block";  
-    // setTimeout(showPage, 6100);
-    // showPage();
 }
 
+// hide loader and display sections previously hidden
 function showPage() {
     loader.display = "none";
     tableResultsDiv.opacity = 1;
     tableResultsDiv.display = "block";
+    pagination.display = "block";
+}
+
+// functions for changing number of results on page
+function changeNumResults(numResults) {
+    // get current url
+    var url = window.location.href;
+
+    // update url with new number of results
+    if (url.includes('per_page') ) {
+        url = url.substring(0, url.length-2);
+        url += numResults;
+    } else {
+        url += '&per_page=' + numResults;
+    }
+
+    // set window location to new url and fetch results again
+    window.location.href = url;
+    fetchResults(currentPage);
 }
