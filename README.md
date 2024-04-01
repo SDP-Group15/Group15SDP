@@ -12,7 +12,7 @@ Navigate to the main branch, click the "Code" dropdown button, click `Download Z
 
 ### 3. Making a virtual environment (optional)
 
-Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Once in the `Group15SDP-main` folder, run the following command (MacOS or Linux, Windows commands given later):
+Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Once in the `Group15SDP-main` folder, run the following command:
 
 MacOS or Ubuntu
 ```sh
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 Finally, start the website by runnning the following command:
 ```sh
-flask --app UserInterface.py run
+python3 UserInterface.py
 ```
 
 This will start a development server and provide a url (usually `http://127.0.0.1:5000`) where the website can be accessed.
