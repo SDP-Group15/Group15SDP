@@ -16,7 +16,7 @@ def openConnection(dbName: str = None) -> type(connect()):
     return conn
 
 
-def searchByGene(gene: str, connection: type(connect()), page: int, per_page: int) -> dict:
+def searchByGene(gene: str, connection: type(connect()), page: int, per_page: int, sortBy: str) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 

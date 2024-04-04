@@ -15,6 +15,7 @@ function fetchResults(page) {
     const meshTerm = params.get('meshTerm');
     const geneIDs = params.get('geneIDs');
     const per_page = params.get('per_page') ?? '20';
+    const sort_by = params.get('sort_by') ?? 'p_Value';
 
     const fetchConfig = {
         method: "GET",
@@ -26,17 +27,18 @@ function fetchResults(page) {
     let fetchUrl;
     if (geneId) {
         // console.log("Gene ID Search: ", geneId);
-        fetchUrl = `/searchGene?geneID=${geneId}&page=${page}&per_page=${per_page}`;
+        fetchUrl = `/searchGene?geneID=${geneId}&page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
     } else if (meshTerm) {
         // console.log("MeSH Term Search: ", meshTerm);
-        fetchUrl = `/searchMesh?page=${page}&per_page=${per_page}`;
+        fetchUrl = `/searchMesh?page=${page}&per_page=${per_page}$sort_by=${sort_by}`;
         fetchConfig.headers = {
             "content-type": "application/json",
             "meshTerm": meshTerm
         }
     } else if (geneIDs) {
         // console.log("Multiple Genes Search: ", geneIDs);
-        fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}&per_page=${per_page}`;
+        // sort_by = params.get('sort_by') ?? 4;
+        fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
     } else {
         console.error('No search type specified');
         return;
@@ -167,17 +169,40 @@ function showPage() {
     pagination.display = "block";
 }
 
-// functions for changing number of results on page
+// function for changing number of results on page
 function changeNumResults(numResults) {
     // get current url
     var url = window.location.href;
 
     // update url with new number of results
     if (url.includes('per_page') ) {
-        url = url.substring(0, url.length-2);
-        url += numResults;
+        indexOfPage = url.indexOf('per_page')
+        replaceStr = url.substring(indexOfPage, indexOfPage+11)
+
+        url = url.replace(replaceStr, "per_page="+numResults);
     } else {
         url += '&per_page=' + numResults;
+    }
+
+    // set window location to new url and fetch results again
+    window.location.href = url;
+    fetchResults(currentPage);
+}
+
+// function to change what value to sort by
+function sortByValue(sortValue) {
+    // get current url
+    var url = window.location.href;
+
+    // update url with new number of results
+    if (url.includes('sort_by') ) {
+        // need to change to only replace sort_by section
+        indexOfPage = url.indexOf('sort_by')
+        replaceStr = url.substring(indexOfPage, url.length);
+
+        url = url.replace(replaceStr, "sort_by="+sortValue);
+    } else {
+        url += '&sort_by=' + sortValue;
     }
 
     // set window location to new url and fetch results again

@@ -17,12 +17,13 @@ def searchByGene_website():
     geneID = request.args.get('geneID')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort', default="p_Value", type=str)
 
     if geneID is None:
         return jsonify({'error': 'No parameter in request'}), 400
 
     dbConnection = openConnection()
-    response = searchByGene(geneID, dbConnection, page, per_page)
+    response = searchByGene(geneID, dbConnection, page, per_page, sort_by)
     dbConnection.close()
 
     return jsonify(response)
@@ -33,6 +34,7 @@ def searchByMesh_website():
     mesh_term = request.headers.get('meshTerm')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort', default="p_Value", type=str)
 
     if mesh_term is None:
         return jsonify({'error': 'No MeSH term provided'}), 400
@@ -48,6 +50,7 @@ def searchMultipleGenes_website():
     gene_ids = request.args.get('geneIDs')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort', default="numGenes", type=str)
 
     if gene_ids is None:
         return jsonify({'error': 'No gene IDs provided'}), 400
