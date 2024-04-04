@@ -21,7 +21,7 @@
 <body onload="setLoader()">
     <header>
         <div class="header">
-            <h1>MeSH Mining</h1>
+            <h1 onclick="returnHome()">MeSH Mining</h1>
         </div>
     </header>
 
@@ -65,6 +65,11 @@
     </div>
 
     <script src="../static/javascript/results.js"></script>
+    <script>
+        function returnHome(){
+            window.location.href = "{{ url_for('index') }}"
+        }
+    </script>
     
 </body>
 
