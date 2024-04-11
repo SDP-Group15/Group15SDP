@@ -20,14 +20,36 @@
 </head>
 <body onload="setLoader()">
     <header>
+        <!-- header for results page, clicking on it returns to home page -->
         <div class="header">
-            <h1>MeSH Mining</h1>
+            <h1 onclick="returnHome()">MeSH Mining</h1>
         </div>
     </header>
 
     <div id="loader"></div>
 
     <h1>Search Results</h1>
+
+    <!-- sort result buttons -->
+    <div class="sort-by-group">
+        <p id="sort-buttons">Sort By: 
+            <button id="gene-sort" onclick="sortByValue('GeneID')" disabled="true">Gene ID</button>
+            <button id="mesh-sort" onclick="sortByValue('MeSH')" disabled="true">MeSH</button>
+            <button id="pValue-sort" onclick="sortByValue('p_Value')" disabled="true">pVal</button>
+            <button id="enrich-sort" onclick="sortByValue('Enrich')" disabled="true">Enrichment</button>
+            <button id="num-gene-sort" onclick="sortByValue('numGenes')" disabled="true">Number of Genes</button>
+        </p>
+    </div>
+
+    <!-- number of results per page buttons -->
+    <div class="results-per-page">
+        <p>Results Per Page: 
+            <button onclick="changeNumResults(20)">20</button>
+            <button onclick="changeNumResults(40)">40</button>
+            <button onclick="changeNumResults(80)">80</button>
+        </p>
+    </div>
+
     <div style="display: none;" id="tableResultsDiv">
 
         <table id="resultsTable">
@@ -40,13 +62,19 @@
         </table>
     </div>
     
-    <div id="pagination">
+    <div  style="display: none;" id="pagination">
         <button id="prevPage" onclick="setLoader()">Previous</button>
         <span id="currentPage">1</span>
         <button id="nextPage" onclick="setLoader()">Next</button>    
     </div>
 
     <script src="../static/javascript/results.js"></script>
+    <script>
+        // return to home page
+        function returnHome(){
+            window.location.href = "{{ url_for('index') }}"
+        }
+    </script>
     
 </body>
 

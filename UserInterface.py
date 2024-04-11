@@ -17,12 +17,13 @@ def searchByGene_website():
     geneID = request.args.get('geneID')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='p_Value', type=str)
 
     if geneID is None:
         return jsonify({'error': 'No parameter in request'}), 400
 
     dbConnection = openConnection()
-    response = searchByGene(geneID, dbConnection, page, per_page)
+    response = searchByGene(geneID, dbConnection, page, per_page, sort_by)
     dbConnection.close()
 
     return jsonify(response)
@@ -33,12 +34,13 @@ def searchByMesh_website():
     mesh_term = request.headers.get('meshTerm')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='p_Value', type=str)
 
     if mesh_term is None:
         return jsonify({'error': 'No MeSH term provided'}), 400
 
     dbConnection = openConnection()
-    response = searchByMesh(mesh_term, dbConnection, page, per_page)
+    response = searchByMesh(mesh_term, dbConnection, page, per_page, sort_by)
     dbConnection.close()
 
     return jsonify(response)
@@ -48,12 +50,21 @@ def searchMultipleGenes_website():
     gene_ids = request.args.get('geneIDs')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='numGenes', type=str)
 
     if gene_ids is None:
         return jsonify({'error': 'No gene IDs provided'}), 400
+    
+    if sort_by == "numGenes":
+        sort_by = 3
+    elif sort_by == "MeSH":
+        sort_by = 2
+    elif sort_by == "p_Value":
+        sort_by = 1
+        
 
     dbConnection = openConnection()
-    response = searchByGeneIDs(gene_ids, dbConnection, page, per_page)  # Adjust function name if different
+    response = searchByGeneIDs(gene_ids, dbConnection, page, per_page, sort_by)  # Adjust function name if different
     dbConnection.close()
 
     return jsonify(response)
