@@ -87,7 +87,7 @@ def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: in
     }
 
 
-def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 0, per_page: int = 0) -> dict:
+def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 0, per_page: int = 0, sortBy: int = 3) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
@@ -102,10 +102,10 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     FROM "GENE"AS A
     WHERE A."GeneID" IN %s
     GROUP BY A."MeSH"
-    ORDER BY 3
+    ORDER BY %s
     DESC LIMIT %s OFFSET %s;"""
 
-    cursor.execute(query, (geneIDs, per_page, offset) )
+    cursor.execute(query, (geneIDs, sortBy, per_page, offset) )
     queryResult = cursor.fetchall()
     output = []
     

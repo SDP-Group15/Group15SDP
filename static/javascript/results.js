@@ -119,7 +119,7 @@ function populateTable(results) {
 // populate table for multiple gene search
 function populateTableMultiple(results) {
     pValueSortButton.disabled = false;
-    enrichSortButton.disabled = false;
+    meshSortButton.disabled = false;
     numGeneSortButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
