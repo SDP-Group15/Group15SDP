@@ -20,15 +20,13 @@ def searchByGene(gene: str, connection: type(connect()), page: int, per_page: in
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
-    cursor.execute(
-        f"""
-        SELECT *
-        FROM "GENE"
-        WHERE "GeneID" = '{gene}'
-        ORDER BY "p_Value" ASC
-        LIMIT {per_page} OFFSET {offset};
-        """
-    )
+    # query to search for single gene ID
+    query = f"""
+        SELECT * FROM "GENE" WHERE "GeneID" = {gene}
+        ORDER BY "{sortBy}" ASC LIMIT
+        {per_page} OFFSET {offset};"""
+    
+    cursor.execute(query)
 
     # Fetching the results for the current page
     output = cursor.fetchall()
@@ -55,18 +53,21 @@ def searchByGene(gene: str, connection: type(connect()), page: int, per_page: in
     }
 
 
-def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: int) -> dict:
+def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: int, sortBy: str) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
     # Adjusted query using the 'MeSH' column
-    cursor.execute("""SELECT * FROM "GENE" WHERE "MeSH" = %s ORDER BY "p_Value" ASC LIMIT %s OFFSET %s;""",
-                   (mesh, per_page, offset) )
-
+    query = f"""
+        SELECT * FROM "GENE" WHERE "MeSH" = '{mesh}'
+        ORDER BY "{sortBy}" ASC LIMIT {per_page} 
+        OFFSET {offset};"""
+    
+    cursor.execute(query)
     output = cursor.fetchall()
 
     # Counting records for pagination
-    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"MeSH\" LIKE %s", (f"%{mesh}%",))
+    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"MeSH\" = %s", (f"%{mesh}%",))
     total_records = cursor.fetchone()[0]
 
     results = [{

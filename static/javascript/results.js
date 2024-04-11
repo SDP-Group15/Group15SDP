@@ -1,3 +1,4 @@
+var fetchResults;
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
     let currentPage = parseInt(params.get('page')) || 1;
@@ -8,8 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
 
-function fetchResults(page) {
-    // document.getElementById("tableResultsDiv").style.opacity = 0.5;
+    const geneSortButton = document.getElementById('gene-sort')
+    const meshSortButton = document.getElementById('mesh-sort')
+    const pValueSortButton = document.getElementById('pValue-sort')
+    const enrichSortButton = document.getElementById('enrich-sort')
+    const numGeneSortButton = document.getElementById('num-gene-sort')
+
+fetchResults = function fetchResults(page) {
     const params = new URLSearchParams(window.location.search);
     const geneId = params.get('geneID');
     const meshTerm = params.get('meshTerm');
@@ -30,7 +36,7 @@ function fetchResults(page) {
         fetchUrl = `/searchGene?geneID=${geneId}&page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
     } else if (meshTerm) {
         // console.log("MeSH Term Search: ", meshTerm);
-        fetchUrl = `/searchMesh?page=${page}&per_page=${per_page}$sort_by=${sort_by}`;
+        fetchUrl = `/searchMesh?page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
         fetchConfig.headers = {
             "content-type": "application/json",
             "meshTerm": meshTerm
@@ -66,7 +72,10 @@ function fetchResults(page) {
 
 // populate table for gene search and mesh search
 function populateTable(results) {
-    // document.getElementById("tableResultsDiv").style.opacity = 1;
+    geneSortButton.disabled = false;
+    meshSortButton.disabled = false;
+    pValueSortButton.disabled = false;
+    enrichSortButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -109,7 +118,9 @@ function populateTable(results) {
 
 // populate table for multiple gene search
 function populateTableMultiple(results) {
-    // document.getElementById("tableResultsDiv").style.opacity = 1;
+    pValueSortButton.disabled = false;
+    enrichSortButton.disabled = false;
+    numGeneSortButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -137,16 +148,22 @@ function populateTableMultiple(results) {
 
     prevPageButton.addEventListener('click', () => {
         setLoader();
-        if (currentPage > 1) fetchResults(currentPage - 1);
+        if (currentPage > 1) {
+            params.set('page', currentPage-1);
+            window.location.search = params;
+        }
     });
 
     nextPageButton.addEventListener('click', () => {
         setLoader();
-        fetchResults(currentPage + 1);
+        params.set('page', currentPage+1);
+        window.location.search = params;
     });
 
     // Initial fetch for page 1 or the specified page
     fetchResults(currentPage);
+
+    
 });
 
 
@@ -171,41 +188,22 @@ function showPage() {
 
 // function for changing number of results on page
 function changeNumResults(numResults) {
-    // get current url
-    var url = window.location.href;
-
-    // update url with new number of results
-    if (url.includes('per_page') ) {
-        indexOfPage = url.indexOf('per_page')
-        replaceStr = url.substring(indexOfPage, indexOfPage+11)
-
-        url = url.replace(replaceStr, "per_page="+numResults);
-    } else {
-        url += '&per_page=' + numResults;
-    }
-
-    // set window location to new url and fetch results again
-    window.location.href = url;
-    fetchResults(currentPage);
+    // get current search parameters
+    var params = new URLSearchParams(window.location.search);
+    // get current page
+    const currentPage = document.getElementById('currentPage').textContent;
+    // update parameters
+    params.set('per_page', numResults);
+    params.set('page', currentPage);
+    window.location.search = params;
 }
 
 // function to change what value to sort by
 function sortByValue(sortValue) {
-    // get current url
-    var url = window.location.href;
-
-    // update url with new number of results
-    if (url.includes('sort_by') ) {
-        // need to change to only replace sort_by section
-        indexOfPage = url.indexOf('sort_by')
-        replaceStr = url.substring(indexOfPage, url.length);
-
-        url = url.replace(replaceStr, "sort_by="+sortValue);
-    } else {
-        url += '&sort_by=' + sortValue;
-    }
-
-    // set window location to new url and fetch results again
-    window.location.href = url;
-    fetchResults(currentPage);
+    var params = new URLSearchParams(window.location.search);
+    const currentPage = document.getElementById('currentPage').textContent;
+    // update parameters
+    params.set('sort_by', sortValue);
+    params.set('page', currentPage);
+    window.location.search = params;
 }
