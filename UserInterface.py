@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_file
+from flask import Flask, render_template, jsonify, request
 from static.python.Backend import openConnection, searchByGene, searchByMesh, searchByGeneIDs
 from static.python.dropdownLists import geneIDs, meshTerms
 app = Flask(__name__)
@@ -7,66 +7,64 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', geneIDs=geneIDs, meshTerms=meshTerms)
 
-
-def format_results(raw_results):
-    formatted = []
-    for result in raw_results:
-        formatted_result = {
-            'id': result[0],
-            'description': result[1],
-
-        }
-        formatted.append(formatted_result)
-    return formatted
+@app.route('/results', methods=['GET'])
+def results():
+    return render_template('results.html')
 
 
 @app.route('/searchGene', methods=['GET'])
-def searchByGene_api():
+def searchByGene_website():
     geneID = request.args.get('geneID')
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 20, type=int)
+    page = request.args.get('page', default=1, type=int)
+    per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='p_Value', type=str)
 
     if geneID is None:
         return jsonify({'error': 'No parameter in request'}), 400
 
     dbConnection = openConnection()
-    response = searchByGene(geneID, dbConnection, page, per_page)
+    response = searchByGene(geneID, dbConnection, page, per_page, sort_by)
     dbConnection.close()
 
     return jsonify(response)
 
-
-
 @app.route('/searchMesh', methods = ['GET'])
-def searchByMesh_api():
+def searchByMesh_website():
     #mesh_term needs to be a header so that the mesh term can contain spaces
     mesh_term = request.headers.get('meshTerm')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='p_Value', type=str)
 
-    if not mesh_term:
+    if mesh_term is None:
         return jsonify({'error': 'No MeSH term provided'}), 400
 
     dbConnection = openConnection()
-    response = searchByMesh(mesh_term, dbConnection, page, per_page)
+    response = searchByMesh(mesh_term, dbConnection, page, per_page, sort_by)
     dbConnection.close()
 
     return jsonify(response)
 
-
-
-
 @app.route('/searchMultipleGenes', methods=['GET'])
-def searchMultipleGenes_api():
+def searchMultipleGenes_website():
     gene_ids = request.args.get('geneIDs')
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='numGenes', type=str)
 
-    if not gene_ids:
+    if gene_ids is None:
         return jsonify({'error': 'No gene IDs provided'}), 400
+    
+    if sort_by == "numGenes":
+        sort_by = 3
+    elif sort_by == "MeSH":
+        sort_by = 2
+    elif sort_by == "p_Value":
+        sort_by = 1
+        
 
     dbConnection = openConnection()
-    response = searchByGeneIDs(gene_ids, dbConnection, page, per_page)  # Adjust function name if different
+    response = searchByGeneIDs(gene_ids, dbConnection, page, per_page, sort_by)  # Adjust function name if different
     dbConnection.close()
 
     return jsonify(response)

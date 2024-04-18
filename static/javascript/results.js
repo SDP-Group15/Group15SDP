@@ -1,3 +1,4 @@
+var fetchResults;
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
     let currentPage = parseInt(params.get('page')) || 1;
@@ -8,11 +9,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
 
-function fetchResults(page) {
+    const geneSortButton = document.getElementById('gene-sort')
+    const meshSortButton = document.getElementById('mesh-sort')
+    const pValueSortButton = document.getElementById('pValue-sort')
+    const enrichSortButton = document.getElementById('enrich-sort')
+    const numGeneSortButton = document.getElementById('num-gene-sort')
+
+fetchResults = function fetchResults(page) {
     const params = new URLSearchParams(window.location.search);
     const geneId = params.get('geneID');
     const meshTerm = params.get('meshTerm');
     const geneIDs = params.get('geneIDs');
+    const per_page = params.get('per_page') ?? '20';
+    const sort_by = params.get('sort_by') ?? 'p_Value';
+
     const fetchConfig = {
         method: "GET",
         headers: {
@@ -23,17 +33,18 @@ function fetchResults(page) {
     let fetchUrl;
     if (geneId) {
         // console.log("Gene ID Search: ", geneId);
-        fetchUrl = `/searchGene?geneID=${geneId}&page=${page}`;
+        fetchUrl = `/searchGene?geneID=${geneId}&page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
     } else if (meshTerm) {
         // console.log("MeSH Term Search: ", meshTerm);
-        fetchUrl = `/searchMesh?page=${page}`;
+        fetchUrl = `/searchMesh?page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
         fetchConfig.headers = {
             "content-type": "application/json",
             "meshTerm": meshTerm
         }
     } else if (geneIDs) {
         // console.log("Multiple Genes Search: ", geneIDs);
-        fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}`;
+        // sort_by = params.get('sort_by') ?? 4;
+        fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
     } else {
         console.error('No search type specified');
         return;
@@ -61,6 +72,10 @@ function fetchResults(page) {
 
 // populate table for gene search and mesh search
 function populateTable(results) {
+    geneSortButton.disabled = false;
+    meshSortButton.disabled = false;
+    pValueSortButton.disabled = false;
+    enrichSortButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -87,7 +102,7 @@ function populateTable(results) {
         // create new table data cell element
         var td_reference = document.createElement('td');
         td_reference.appendChild(articleLink); // append hyperlink to table cell
-        console.log(typeof(result.pVal));
+        // console.log(typeof(result.pVal));
         row.innerHTML = `
             <td>${result.id}</td>
             <td>${result.mesh}</td>
@@ -96,10 +111,16 @@ function populateTable(results) {
         row.appendChild(td_reference);
         resultsTableBody.appendChild(row);
     });
+
+    showPage();
+    
 }
 
 // populate table for multiple gene search
 function populateTableMultiple(results) {
+    pValueSortButton.disabled = false;
+    meshSortButton.disabled = false;
+    numGeneSortButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -120,16 +141,69 @@ function populateTableMultiple(results) {
             <td>${result.genes || 'N/A'}`;
         resultsTableBody.appendChild(row);
     });
+
+    showPage();
+    
 }
 
     prevPageButton.addEventListener('click', () => {
-        if (currentPage > 1) fetchResults(currentPage - 1);
+        setLoader();
+        if (currentPage > 1) {
+            params.set('page', currentPage-1);
+            window.location.search = params;
+        }
     });
 
     nextPageButton.addEventListener('click', () => {
-        fetchResults(currentPage + 1);
+        setLoader();
+        params.set('page', currentPage+1);
+        window.location.search = params;
     });
 
     // Initial fetch for page 1 or the specified page
     fetchResults(currentPage);
+
+    
 });
+
+
+// functions for loading icon
+const tableResultsDiv = document.getElementById('tableResultsDiv').style;
+const pagination = document.getElementById('pagination').style;
+const loader = document.getElementById('loader').style;
+
+// show the loading icon
+function setLoader() {
+    tableResultsDiv.opacity = 0.5
+    loader.display = "block";  
+}
+
+// hide loader and display sections previously hidden
+function showPage() {
+    loader.display = "none";
+    tableResultsDiv.opacity = 1;
+    tableResultsDiv.display = "block";
+    pagination.display = "block";
+}
+
+// function for changing number of results on page
+function changeNumResults(numResults) {
+    // get current search parameters
+    var params = new URLSearchParams(window.location.search);
+    // get current page
+    const currentPage = document.getElementById('currentPage').textContent;
+    // update parameters
+    params.set('per_page', numResults);
+    params.set('page', currentPage);
+    window.location.search = params;
+}
+
+// function to change what value to sort by
+function sortByValue(sortValue) {
+    var params = new URLSearchParams(window.location.search);
+    const currentPage = document.getElementById('currentPage').textContent;
+    // update parameters
+    params.set('sort_by', sortValue);
+    params.set('page', currentPage);
+    window.location.search = params;
+}
