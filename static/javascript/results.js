@@ -207,3 +207,18 @@ function sortByValue(sortValue) {
     params.set('page', currentPage);
     window.location.search = params;
 }
+
+function viewNetworkGraph() {
+    const params = new URLSearchParams(window.location.search);
+    const geneId = params.get('geneID');
+    const meshTerm = params.get('meshTerm');
+
+    if (geneId) {
+        window.location.href = `/networkGraphPage?geneID=${geneId}`;
+    } else if (meshTerm) {
+        window.location.href = `/networkGraphPage?meshTerm=${meshTerm}`;
+    } else {
+        alert("No valid search type found.");
+    }
+}
+
