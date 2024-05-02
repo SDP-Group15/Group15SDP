@@ -67,7 +67,7 @@ def searchMultipleGenes_website():
         
 
     dbConnection = openConnection()
-    response = searchByGeneIDs(gene_ids, dbConnection, page, per_page, sort_by)  # Adjust function name if different
+    response = searchByGeneIDs(gene_ids, dbConnection, page, per_page, sort_by) 
     dbConnection.close()
 
     return jsonify(response)
@@ -76,7 +76,7 @@ def searchMultipleGenes_website():
 def network_graph_gene():
     geneID = request.args.get('geneID')
     page = request.args.get('page', default=1, type=int)
-    per_page = request.args.get('per_page', default=100, type=int)  # Adjust per_page for network graph
+    per_page = request.args.get('per_page', default=100, type=int) 
     sort_by = request.args.get('sort_by', default='GENE.p_Value', type=str)
 
     if geneID is None:
@@ -86,7 +86,6 @@ def network_graph_gene():
     try:
         # Fetch data using the existing function
         response = searchByGene(geneID, dbConnection, page, per_page, sort_by)
-        # Optionally process the response here to transform it for a network graph
         graph_data = transform_for_network_graph(response['results'])
         return jsonify(graph_data)
     finally:
@@ -106,7 +105,6 @@ def network_graph_mesh():
     try:
         # Fetch data using the existing function
         response = searchByMesh(meshTerm, dbConnection, page, per_page, sort_by)
-        # Optionally process the response here to transform it for a network graph
         graph_data = transform_for_network_graph(response['results'])
         return jsonify(graph_data)
     finally:
@@ -149,7 +147,6 @@ def transform_for_network_graph(results):
         p_val_percentile_index = find_nearest_percentile(log_p_val, log_p_val_percentiles)
         enrichment_percentile_index = find_nearest_percentile(enrichment, enrichment_percentiles)
 
-        # Inverse scaling: lower index means higher thickness and lower distance
         normalized_thickness = 100 - 90 * (p_val_percentile_index / 100)
         normalized_distance = 100 - 90 * (enrichment_percentile_index / 100)
 
