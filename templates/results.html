@@ -15,6 +15,8 @@
     
     <link rel="stylesheet" type="text/css" href="../static/css/styleResults.css">
 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
     <title>MeSH Mining</title>
 
 </head>
@@ -38,6 +40,7 @@
             <button id="pValue-sort" onclick="sortByValue('p_Value')" disabled="true">pVal</button>
             <button id="enrich-sort" onclick="sortByValue('Enrich')" disabled="true">Enrichment</button>
             <button id="num-gene-sort" onclick="sortByValue('numGenes')" disabled="true">Number of Genes</button>
+            <button id="view-network-graph" class="view-network-button" onclick="viewNetworkGraph()">View Network Graph</button>
         </p>
     </div>
 
@@ -67,6 +70,8 @@
         <span id="currentPage">1</span>
         <button id="nextPage" onclick="setLoader()">Next</button>    
     </div>
+
+    <div id="network-graph-container" style="display: none;"></div>
 
     <script src="../static/javascript/results.js"></script>
     <script>
