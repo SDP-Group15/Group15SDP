@@ -26,18 +26,18 @@
     <script>
         const data = {{ graph_data|safe }};
 
-        // Function to normalize thickness values
+        // Function to normalize thickness values for graph appearance
         function normalizeThickness(thickness, minThickness = 1, maxThickness = 10) {
-            const minOriginal = 10; // Adjust based on your dataset
-            const maxOriginal = 100; // Adjust based on your dataset
+            const minOriginal = 10;
+            const maxOriginal = 100; 
 
             return minThickness + ((thickness - minOriginal) / (maxOriginal - minOriginal)) * (maxThickness - minThickness);
         }
 
-        // Function to normalize distance values
+        // Function to normalize distance values for graph appearance
         function normalizeDistance(distance, minDistance = 0, maxDistance = 200) {
-            const minOriginal = 0; // Adjust based on your dataset
-            const maxOriginal = 100; // Adjust based on your dataset
+            const minOriginal = 10; 
+            const maxOriginal = 100;
 
             return minDistance + ((distance - minOriginal) / (maxOriginal - minOriginal)) * (maxDistance - minDistance);
         }
@@ -51,7 +51,7 @@
                 .attr("height", height);
 
             const simulation = d3.forceSimulation(data.nodes)
-                .force("link", d3.forceLink(data.edges).id(d => d.id).distance(d => normalizeDistance(d.distance))) // Use distance normalization here
+                .force("link", d3.forceLink(data.edges).id(d => d.id).distance(d => normalizeDistance(d.distance)))
                 .force("charge", d3.forceManyBody().strength(-300))
                 .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -59,7 +59,7 @@
                 .selectAll("line")
                 .data(data.edges)
                 .join("line")
-                .attr("stroke-width", d => normalizeThickness(d.thickness)) // Use thickness normalization here
+                .attr("stroke-width", d => normalizeThickness(d.thickness)) 
                 .attr("stroke", "#999");
 
             const node = svg.append("g")
@@ -85,7 +85,7 @@
             });
         }
 
-        // Call the render function with the provided data
+        // Calling the render function with the provided data
         renderNetworkGraph(data);
     </script>
 </body>
