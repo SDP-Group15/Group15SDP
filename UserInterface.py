@@ -1,14 +1,11 @@
 from flask import Flask, render_template, jsonify, request
 from static.python.Backend import openConnection, searchByGene, searchByMesh, searchByGeneIDs
 from static.python.dropdownLists import geneIDs, meshTerms
-from flask_cors import CORS
 import json
 import numpy as np
 import math
 
 app = Flask(__name__)
-CORS(app)
-
 @app.route('/')
 def index():
     return render_template('index.html', geneIDs=geneIDs, meshTerms=meshTerms)
