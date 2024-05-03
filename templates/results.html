@@ -40,7 +40,7 @@
             <button id="pValue-sort" onclick="sortByValue('p_Value')" disabled="true">pVal</button>
             <button id="enrich-sort" onclick="sortByValue('Enrich')" disabled="true">Enrichment</button>
             <button id="num-gene-sort" onclick="sortByValue('numGenes')" disabled="true">Number of Genes</button>
-            <button id="view-network-graph" class="view-network-button" onclick="viewNetworkGraph()">View Network Graph</button>
+            <button id="view-network-graph" class="view-network-button" onclick="viewNetworkGraph()" disabled="true">View Network Graph</button>
         </p>
     </div>
 
@@ -79,6 +79,22 @@
         function returnHome(){
             window.location.href = "{{ url_for('index') }}"
         }
+
+        function viewNetworkGraph() {
+            const params = new URLSearchParams(window.location.search);
+            const geneId = params.get('geneID');
+            const meshTerm = params.get('meshTerm');
+
+            if (geneId) {
+                // window.location.href = `/networkGraphPage?geneID=${geneId}`;
+                window.open(`{{ url_for('network_graph_page') }}?geneID=${geneId}`, '_blank')
+            } else if (meshTerm) {
+                // window.location.href = `/networkGraphPage?meshTerm=${meshTerm}`;
+                window.open(`{{ url_for('network_graph_page') }}?meshTerm=${meshTerm}`, '_blank')
+            } else {
+                alert("No valid search type found.");
+            }
+    }
     </script>
     
 </body>

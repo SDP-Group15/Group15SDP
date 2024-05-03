@@ -64,6 +64,8 @@ def searchMultipleGenes_website():
         sort_by = 2
     elif sort_by == "p_Value":
         sort_by = 1
+    # else:
+    #     sort_by = 3
         
 
     dbConnection = openConnection()
