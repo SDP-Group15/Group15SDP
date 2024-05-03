@@ -66,42 +66,25 @@
         </div>
     </div>
 
-    
-
-    <div id="searchResults" class="search-results"></div>
-
-    <script src="../static/javascript/functions.js"></script>
+    <script src="../static/javascript/index.js"></script>
 
     <script>
         document.getElementById('searchButton').addEventListener('click', function() {
             var geneId = document.getElementById('searchInput').value;
-            window.location.href = '/static/results.html?geneID=' + encodeURIComponent(geneId) + '&page=1';
-
+            window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);
         });
 
-        function copyGeneToInput(){
-            var sel = document.getElementById("geneSelections");
-            var val = sel.options[sel.selectedIndex].value;
-            document.getElementById("searchInput").value = val;
-        }
+        document.getElementById('meshSearchButton').addEventListener('click', function() {
+            var meshTerm = document.getElementById('meshInput').value;
+            window.location.href = "{{ url_for('results') }}" + "?meshTerm=" + encodeURIComponent(meshTerm);
+        });
 
-        function copyMeshToInput(){
-            var sel = document.getElementById("meshSelections");
-            var val = sel.options[sel.selectedIndex].value;
-            document.getElementById("meshInput").value = val;
-        }
-        
-        function copyMultipleGenesToInput(){
-            var sel = document.getElementById("multipleGeneSelections");
-            var val = sel.options[sel.selectedIndex].value;
-            var userInput = document.getElementById("multiGeneInput");
-            if (userInput.value == ""){
-                userInput.value = val;
-            } else {
-                userInput.value += ',' + val;
-            }
-        }
+        document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
+            var geneIds = document.getElementById('multiGeneInput').value;
+            window.location.href = "{{ url_for('results') }}" + "?geneIDs=" + encodeURIComponent(geneIds);
+        });
     </script>
+
 </body>
 </html>
 

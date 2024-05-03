@@ -1,29 +1,52 @@
 # Boehringer Ingelheim MeSH Senior Design Project
 
-Most flask operations are conducted from `UserInterface.py` and much of the frontend development takes place in `templates/index.html`.
+Welcome to the MeSH Mining Github repo. Instructions, user manuals, and various other info can be found in the `info` directory.
 
-In order to run this web application, start a local PostgreSQL server and use the following terminal command:
+## Running the MeSH Mining Website
+
+### 1. Start a local PostgreSQL server
+
+### 2. Download a zip file of the Group15SDP repo
+
+Navigate to the main branch, click the "Code" dropdown button, click `Download ZIP` and navigate to the downloaded folder (`Group15SDP-main`).
+
+### 3. Making a virtual environment (optional)
+
+Making a python virtual environment is optional, but recommended as there are a number of dependencies that need to be installed. Once in the `Group15SDP-main` folder, run the following command:
+
+MacOS or Ubuntu
 ```sh
-flask --app UserInterface.py run
+python3 -m venv .venv
 ```
 
-Some specific information for various components of this project is included in `README_Files`.
+Windows
+```sh
+py -3 -m venv .venv
+```
 
-## Dependencies
+Activate the environment from within the `Group15SDP-main` directory by typing the following command:
 
-1. Flask
+MacOS or Ubuntu
 ```sh
-pip install Flask
+. .venv/bin/activate
 ```
-2. psycopg2
+Windows
 ```sh
-pip install psycopg2
+.venv\Scripts\activate
 ```
-3. simplejson
+
+### 4. Installing the dependencies
+
+From within the `Group15SDP-main` folder, install the dependencies by typing the following command (activate the environment first if step 2 was completed):
 ```sh
-pip install simplejson
+pip install -r requirements.txt
 ```
-or
+
+### 5. Start the server for the website
+
+Finally, start the website by runnning the following command:
 ```sh
-python3 -m pip install simplejson
+python3 UserInterface.py
 ```
+
+This will start a development server and provide a url (usually `http://127.0.0.1:5000`) where the website can be accessed.

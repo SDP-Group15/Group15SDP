@@ -16,19 +16,17 @@ def openConnection(dbName: str = None) -> type(connect()):
     return conn
 
 
-def searchByGene(gene: str, connection: type(connect()), page: int, per_page: int) -> dict:
+def searchByGene(gene: str, connection: type(connect()), page: int, per_page: int, sortBy: str) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
-    cursor.execute(
-        f"""
-        SELECT *
-        FROM "GENE"
-        WHERE "GeneID" = '{gene}'
-        ORDER BY "p_Value" ASC
-        LIMIT {per_page} OFFSET {offset};
-        """
-    )
+    # query to search for single gene ID
+    query = f"""
+        SELECT * FROM "GENE" WHERE "GeneID" = {gene}
+        ORDER BY "{sortBy}" ASC LIMIT
+        {per_page} OFFSET {offset};"""
+    
+    cursor.execute(query)
 
     # Fetching the results for the current page
     output = cursor.fetchall()
@@ -40,7 +38,7 @@ def searchByGene(gene: str, connection: type(connect()), page: int, per_page: in
     # Constructing the response
     results = [{
         'id': row[0],
-        'description': row[1],
+        'mesh': row[1],
         'pVal': row[2],
         'enrichment': row[3],
         'references': row[4].split(',') if row[4] else []
@@ -55,23 +53,26 @@ def searchByGene(gene: str, connection: type(connect()), page: int, per_page: in
     }
 
 
-def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: int) -> dict:
+def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: int, sortBy: str) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
     # Adjusted query using the 'MeSH' column
-    cursor.execute("""SELECT * FROM "GENE" WHERE "MeSH" = %s ORDER BY "p_Value" ASC LIMIT %s OFFSET %s;""",
-                   (mesh, per_page, offset) )
-
+    query = f"""
+        SELECT * FROM "GENE" WHERE "MeSH" = '{mesh}'
+        ORDER BY "{sortBy}" ASC LIMIT {per_page} 
+        OFFSET {offset};"""
+    
+    cursor.execute(query)
     output = cursor.fetchall()
 
     # Counting records for pagination
-    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"MeSH\" LIKE %s", (f"%{mesh}%",))
+    cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"MeSH\" = %s", (f"%{mesh}%",))
     total_records = cursor.fetchone()[0]
 
     results = [{
         'id': row[0],
-        'description': row[1],
+        'mesh': row[1],
         'pVal': row[2],
         'enrichment': row[3],
         'references': row[4].split(',') if row[4] else []
@@ -86,7 +87,7 @@ def searchByMesh(mesh: str, connection: type(connect()), page: int, per_page: in
     }
 
 
-def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 0, per_page: int = 0) -> dict:
+def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 0, per_page: int = 0, sortBy: int = 3) -> dict:
     cursor = connection.cursor()
     offset = (page - 1) * per_page
 
@@ -95,44 +96,34 @@ def searchByGeneIDs(gene_ids_str: str, connection: type(connect()), page: int = 
     geneIDs = tuple(geneList)
 
     # Constructing the query
-    OGquery="""
-    SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,A."MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY "GeneID")AS listGenes
-    FROM "GENE"AS A
-    WHERE A."MeSH"IN(SELECT B."MeSH"FROM "GENE"AS B WHERE B."GeneID" = %s)
-    GROUP BY A."MeSH"
-    ORDER BY 4
-    ASC LIMIT %s OFFSET %s;"""
 
     query="""
     SELECT DISTINCT ARRAY_AGG("p_Value")AS pVals,"MeSH",COUNT(DISTINCT "GeneID")AS numGenes,ARRAY_AGG("GeneID" ORDER BY A."GeneID")AS listGenes
     FROM "GENE"AS A
-    WHERE A."MeSH" IN(SELECT B."MeSH" FROM "GENE"AS B WHERE B."GeneID" IN %s )
+    WHERE A."GeneID" IN %s
     GROUP BY A."MeSH"
-    ORDER BY 4
-    ASC LIMIT %s OFFSET %s;"""
+    ORDER BY %s
+    DESC LIMIT %s OFFSET %s;"""
 
-    cursor.execute(query, (geneIDs, per_page, offset) )
+    cursor.execute(query, (geneIDs, sortBy, per_page, offset) )
     queryResult = cursor.fetchall()
     output = []
     
-    # search with just geneID = 22 to not show "Adolescent"
-    # for testing puposes --Isaiah
-    
+    # formatting results
     for row in queryResult:
         row = list(row)
         row[0] = multipleByGeneHelp(row[0])
 
-        i = 0
-        ids = ""
-        for id in row[3]:
-            ids += str(id) +","
-            i += 1
-            if i > 4:
-                break
-        ids+= "..."
-        row[3] = ids
+        # limiting the number of genes shown
+        if (len(row[3]) > 5 ):
+            ids = ""
+            for i in range(6):
+                ids += str(row[3][i]) + ","
+            ids += " . . ."
+            row[3] = ids
 
         output.append(row)
+    
 
     # Counting records for pagination
     cursor.execute("SELECT COUNT(*) FROM \"GENE\" WHERE \"GeneID\" IN %s", (tuple(geneList),))
