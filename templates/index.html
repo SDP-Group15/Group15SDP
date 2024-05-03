@@ -71,17 +71,33 @@
     <script>
         document.getElementById('searchButton').addEventListener('click', function() {
             var geneId = document.getElementById('searchInput').value;
-            window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);
+            if (geneId != "") {
+                window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);   
+            } else {
+                alert("Please enter a Gene ID");
+            }
         });
 
         document.getElementById('meshSearchButton').addEventListener('click', function() {
             var meshTerm = document.getElementById('meshInput').value;
-            window.location.href = "{{ url_for('results') }}" + "?meshTerm=" + encodeURIComponent(meshTerm);
+            if (meshTerm != "")
+            {
+                window.location.href = "{{ url_for('results') }}" + "?meshTerm=" + encodeURIComponent(meshTerm);
+            } else {
+                alert("Please enter a MeSH Term");
+            }
+            
         });
 
         document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
             var geneIds = document.getElementById('multiGeneInput').value;
-            window.location.href = "{{ url_for('results') }}" + "?geneIDs=" + encodeURIComponent(geneIds);
+            if (geneIds != "")
+            {
+                window.location.href = "{{ url_for('results') }}" + "?geneIDs=" + encodeURIComponent(geneIds);
+            } else {
+                alert("Please enter 1 or more Gene IDs");
+            }
+            
         });
     </script>
 
