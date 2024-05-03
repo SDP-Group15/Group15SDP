@@ -37,7 +37,7 @@
                     <option value="{{ID}}">{{ ID }}</option>
                 {% endfor %}
             </select>
-            <button id="searchButton" class="search-button">Search</button>
+            <button id="searchButton" class="search-button" onclick="searchByGeneID()">Search</button>
         </div>
 
         <!-- Search by MeSH -->
@@ -49,7 +49,7 @@
                     <option value="{{mesh}}">{{ mesh }}</option>
                 {% endfor %}
             </select>
-            <button id="meshSearchButton" class="search-button">Search</button>
+            <button id="meshSearchButton" class="search-button" onclick="searchyByMesh()">Search</button>
         </div>
 
         <!-- Search by Multiple Genes -->
@@ -61,7 +61,7 @@
                     <option value="{{ID}}">{{ ID }}</option>
                 {% endfor %}
             </select>
-            <button id="multiGeneSearchButton" class="search-button">Search</button>
+            <button id="multiGeneSearchButton" class="search-button" onclick="searchyByMultGeneID()">Search</button>
             </div>
         </div>
     </div>
@@ -69,20 +69,37 @@
     <script src="../static/javascript/index.js"></script>
 
     <script>
-        document.getElementById('searchButton').addEventListener('click', function() {
+        // Goes to results page for a single gene ID
+        function searchByGeneID() {
             var geneId = document.getElementById('searchInput').value;
-            window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);
-        });
+            if (geneId != "") {
+                window.location.href = "{{ url_for('results') }}" + "?geneID=" + encodeURIComponent(geneId);   
+            } else {
+                alert("Please enter a Gene ID");
+            }          
+        }
 
-        document.getElementById('meshSearchButton').addEventListener('click', function() {
+        // Goes to results page for a MeSH term
+        function searchyByMesh() {
             var meshTerm = document.getElementById('meshInput').value;
-            window.location.href = "{{ url_for('results') }}" + "?meshTerm=" + encodeURIComponent(meshTerm);
-        });
+            if (meshTerm != "")
+            {
+                window.location.href = "{{ url_for('results') }}" + "?meshTerm=" + encodeURIComponent(meshTerm);
+            } else {
+                alert("Please enter a MeSH Term");
+            }            
+        }
 
-        document.getElementById('multiGeneSearchButton').addEventListener('click', function() {
+        // Goes to results page for multiple gene IDs
+        function searchyByMultGeneID() {
             var geneIds = document.getElementById('multiGeneInput').value;
-            window.location.href = "{{ url_for('results') }}" + "?geneIDs=" + encodeURIComponent(geneIds);
-        });
+            if (geneIds != "")
+            {
+                window.location.href = "{{ url_for('results') }}" + "?geneIDs=" + encodeURIComponent(geneIds);
+            } else {
+                alert("Please enter 1 or more Gene IDs");
+            }            
+        }
     </script>
 
 </body>
