@@ -4,16 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPage = parseInt(params.get('page')) || 1;
 
     const resultsTableBody = document.getElementById('resultsTable').querySelector('tbody');
-    const resultsTableHead = document.getElementById('resultsTable').querySelector('thead')
+    const resultsTableHead = document.getElementById('resultsTable').querySelector('thead');
     const currentPageSpan = document.getElementById('currentPage');
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
 
-    const geneSortButton = document.getElementById('gene-sort')
-    const meshSortButton = document.getElementById('mesh-sort')
-    const pValueSortButton = document.getElementById('pValue-sort')
-    const enrichSortButton = document.getElementById('enrich-sort')
-    const numGeneSortButton = document.getElementById('num-gene-sort')
+    const geneSortButton = document.getElementById('gene-sort');
+    const meshSortButton = document.getElementById('mesh-sort');
+    const pValueSortButton = document.getElementById('pValue-sort');
+    const enrichSortButton = document.getElementById('enrich-sort');
+    const numGeneSortButton = document.getElementById('num-gene-sort');
+    const viewNetworkGraphButton = document.getElementById('view-network-graph');
 
 fetchResults = function fetchResults(page) {
     const params = new URLSearchParams(window.location.search);
@@ -21,7 +22,7 @@ fetchResults = function fetchResults(page) {
     const meshTerm = params.get('meshTerm');
     const geneIDs = params.get('geneIDs');
     const per_page = params.get('per_page') ?? '20';
-    const sort_by = params.get('sort_by') ?? 'p_Value';
+    sort_by = params.get('sort_by') ?? 'p_Value';
 
     const fetchConfig = {
         method: "GET",
@@ -43,7 +44,7 @@ fetchResults = function fetchResults(page) {
         }
     } else if (geneIDs) {
         // console.log("Multiple Genes Search: ", geneIDs);
-        // sort_by = params.get('sort_by') ?? 4;
+        sort_by = params.get('sort_by') ?? 'numGenes';
         fetchUrl = `/searchMultipleGenes?geneIDs=${geneIDs}&page=${page}&per_page=${per_page}&sort_by=${sort_by}`;
     } else {
         console.error('No search type specified');
@@ -76,6 +77,7 @@ function populateTable(results) {
     meshSortButton.disabled = false;
     pValueSortButton.disabled = false;
     enrichSortButton.disabled = false;
+    viewNetworkGraphButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows
     resultsTableHead.innerHTML = ''; // Clear existing rows
 
@@ -118,7 +120,7 @@ function populateTable(results) {
 
 // populate table for multiple gene search
 function populateTableMultiple(results) {
-    pValueSortButton.disabled = false;
+    // pValueSortButton.disabled = false;
     meshSortButton.disabled = false;
     numGeneSortButton.disabled = false;
     resultsTableBody.innerHTML = ''; // Clear existing rows

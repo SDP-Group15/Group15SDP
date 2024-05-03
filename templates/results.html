@@ -15,6 +15,8 @@
     
     <link rel="stylesheet" type="text/css" href="../static/css/styleResults.css">
 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
     <title>MeSH Mining</title>
 
 </head>
@@ -38,6 +40,7 @@
             <button id="pValue-sort" onclick="sortByValue('p_Value')" disabled="true">pVal</button>
             <button id="enrich-sort" onclick="sortByValue('Enrich')" disabled="true">Enrichment</button>
             <button id="num-gene-sort" onclick="sortByValue('numGenes')" disabled="true">Number of Genes</button>
+            <button id="view-network-graph" class="view-network-button" onclick="viewNetworkGraph()" disabled="true">View Network Graph</button>
         </p>
     </div>
 
@@ -68,12 +71,30 @@
         <button id="nextPage" onclick="setLoader()">Next</button>    
     </div>
 
+    <div id="network-graph-container" style="display: none;"></div>
+
     <script src="../static/javascript/results.js"></script>
     <script>
         // return to home page
         function returnHome(){
             window.location.href = "{{ url_for('index') }}"
         }
+
+        function viewNetworkGraph() {
+            const params = new URLSearchParams(window.location.search);
+            const geneId = params.get('geneID');
+            const meshTerm = params.get('meshTerm');
+
+            if (geneId) {
+                // window.location.href = `/networkGraphPage?geneID=${geneId}`;
+                window.open(`{{ url_for('network_graph_page') }}?geneID=${geneId}`, '_blank')
+            } else if (meshTerm) {
+                // window.location.href = `/networkGraphPage?meshTerm=${meshTerm}`;
+                window.open(`{{ url_for('network_graph_page') }}?meshTerm=${meshTerm}`, '_blank')
+            } else {
+                alert("No valid search type found.");
+            }
+    }
     </script>
     
 </body>
